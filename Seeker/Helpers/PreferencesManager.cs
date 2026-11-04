@@ -34,7 +34,13 @@ namespace Seeker
         {
             PreferencesState.CurrentlyLoggedIn = prefs.GetBoolean(KeyConsts.M_CurrentlyLoggedIn, false);
             PreferencesState.Username = prefs.GetString(KeyConsts.M_Username, "");
-            PreferencesState.Password = prefs.GetString(KeyConsts.M_Password, "");
+            string storedPassword = prefs.GetString(KeyConsts.M_Password, "");
+            PreferencesState.Password = SecureCredentialStore.Unprotect(storedPassword);
+            if (!string.IsNullOrEmpty(storedPassword) && !SecureCredentialStore.IsEncrypted(storedPassword))
+            {
+                // migrate the legacy plaintext value to the Android Keystore protected form
+                prefs.Edit().PutString(KeyConsts.M_Password, SecureCredentialStore.ProtectCached(PreferencesState.Password)).Apply();
+            }
         }
 
         public static void RestoreUIPreferences(ISharedPreferences prefs)
@@ -337,7 +343,7 @@ namespace Seeker
             lock (SharedPrefLock)
             {
                 var editor = SeekerState.SharedPreferences.Edit();
-                editor.PutString(KeyConsts.M_Password, PreferencesState.Password);
+                editor.PutString(KeyConsts.M_Password, SecureCredentialStore.ProtectCached(PreferencesState.Password));
                 editor.Apply();
             }
         }
@@ -349,7 +355,7 @@ namespace Seeker
                 var editor = SeekerState.SharedPreferences.Edit();
                 editor.PutBoolean(KeyConsts.M_CurrentlyLoggedIn, PreferencesState.CurrentlyLoggedIn);
                 editor.PutString(KeyConsts.M_Username, PreferencesState.Username);
-                editor.PutString(KeyConsts.M_Password, PreferencesState.Password);
+                editor.PutString(KeyConsts.M_Password, SecureCredentialStore.ProtectCached(PreferencesState.Password));
                 editor.Apply();
             }
         }
@@ -942,7 +948,7 @@ namespace Seeker
                 var editor = SeekerState.SharedPreferences.Edit();
                 editor.PutBoolean(KeyConsts.M_CurrentlyLoggedIn, PreferencesState.CurrentlyLoggedIn);
                 editor.PutString(KeyConsts.M_Username, PreferencesState.Username);
-                editor.PutString(KeyConsts.M_Password, PreferencesState.Password);
+                editor.PutString(KeyConsts.M_Password, SecureCredentialStore.ProtectCached(PreferencesState.Password));
                 editor.PutString(KeyConsts.M_SaveDataDirectoryUri, PreferencesState.SaveDataDirectoryUri);
                 editor.PutBoolean(KeyConsts.M_SaveDataDirectoryUriIsFromTree, PreferencesState.SaveDataDirectoryUriIsFromTree);
                 editor.PutInt(KeyConsts.M_NumberSearchResults, PreferencesState.NumberSearchResults);
