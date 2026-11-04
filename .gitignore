@@ -364,3 +364,10 @@ healthchecksdb
 # dotnet-trace captures
 *.nettrace
 *.speedscope.json
+
+# SeekerOG build outputs and signing material (never commit)
+release-apks/
+*.jks
+*.keystore
+*.p12
+*.pfx

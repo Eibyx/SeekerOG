@@ -1,0 +1,184 @@
+name: SeekerOG build & release
+
+# Builds per-ABI APKs (arm64-v8a, armeabi-v7a) of the FOSS flavour (no Firebase/telemetry),
+# runs the unit tests, signs with the persistent SeekerOG release key from repository secrets,
+# verifies signature / certificate / package / version / minSdk / ABIs, computes SHA-256 and,
+# for release tags, publishes a GitHub pre-release with the APKs and SHA256SUMS.txt.
+#
+# Required repository secrets for signed builds (Settings > Secrets and variables > Actions):
+#   SEEKEROG_KEYSTORE_BASE64   base64 of the release keystore (PKCS12)
+#   SEEKEROG_STORE_PASSWORD    keystore password
+#   SEEKEROG_KEY_ALIAS         key alias (e.g. seekerog)
+#   SEEKEROG_KEY_PASSWORD      optional, defaults to the keystore password
+# Optional: .github/seekerog-signing-cert.sha256 pins the expected certificate fingerprint.
+# Without secrets, branch / PR builds still compile, test and check ABIs (debug-signed,
+# uploaded as CI artifacts only); release tags refuse to publish.
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to publish (e.g. v0.1.0-alpha). Leave empty to only build.'
+        required: false
+        default: ''
+  push:
+    tags:
+      - 'v*'
+    branches:
+      - feature/seeker-glass
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: seekerog-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  DOTNET_NOLOGO: 'true'
+  DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
+
+jobs:
+  test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Install workloads
+        run: dotnet workload restore UnitTestCommon/UnitTestCommon.csproj
+      - name: Test
+        run: dotnet test UnitTestCommon/UnitTestCommon.csproj --configuration Release --filter "TestCategory!=RealData" --logger "trx;LogFileName=test-results.trx"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: '**/TestResults/*.trx'
+
+  build:
+    name: Build, sign and verify APKs
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+      version: ${{ steps.meta.outputs.version }}
+      signed: ${{ steps.keystore.outputs.signed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Install Android workload
+        run: dotnet workload restore Seeker/Seeker.csproj
+
+      - name: Resolve version and tag
+        id: meta
+        run: |
+          VERSION="$(dotnet msbuild Seeker/Seeker.csproj -getProperty:ApplicationDisplayVersion -v:q | tr -d '[:space:]')"
+          TAG=""
+          if [ "${{ github.event_name }}" = "push" ] && [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            TAG="${GITHUB_REF#refs/tags/}"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            TAG="${{ inputs.tag }}"
+          fi
+          if [ -n "$TAG" ] && [ "$TAG" != "v$VERSION" ]; then
+            echo "::error::Tag $TAG does not match ApplicationDisplayVersion v$VERSION in Seeker/Seeker.csproj"
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Decode release keystore
+        id: keystore
+        env:
+          KS_B64: ${{ secrets.SEEKEROG_KEYSTORE_BASE64 }}
+          STORE_PASS: ${{ secrets.SEEKEROG_STORE_PASSWORD }}
+        run: |
+          if [ -n "$KS_B64" ] && [ -n "$STORE_PASS" ]; then
+            mkdir -p "$RUNNER_TEMP/ks"
+            echo "$KS_B64" | base64 -d > "$RUNNER_TEMP/ks/release.p12"
+            chmod 600 "$RUNNER_TEMP/ks/release.p12"
+            echo "SEEKEROG_KEYSTORE=$RUNNER_TEMP/ks/release.p12" >> "$GITHUB_ENV"
+            echo "signed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+            if [ -n "${{ steps.meta.outputs.tag }}" ]; then
+              echo "::error::Release tag requested but the SeekerOG signing secrets are not configured. Refusing to publish unsigned or debug-signed APKs."
+              exit 1
+            fi
+            echo "::notice::Signing secrets not configured: CI build only (debug-signed, not for release)."
+          fi
+
+      - name: Build per-ABI APKs
+        env:
+          SEEKEROG_STORE_PASS: ${{ secrets.SEEKEROG_STORE_PASSWORD }}
+          SEEKEROG_KEY_PASS: ${{ secrets.SEEKEROG_KEY_PASSWORD }}
+          SEEKEROG_KEY_ALIAS: ${{ secrets.SEEKEROG_KEY_ALIAS }}
+        run: |
+          [ -n "$SEEKEROG_KEY_ALIAS" ] || export SEEKEROG_KEY_ALIAS=seekerog
+          [ -n "$SEEKEROG_KEY_PASS" ] || unset SEEKEROG_KEY_PASS
+          Misc/seekerog-build.sh "${{ steps.meta.outputs.version }}"
+
+      - name: Remove keystore
+        if: always()
+        run: rm -rf "$RUNNER_TEMP/ks"
+
+      - name: Upload APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: seekerog-${{ steps.meta.outputs.version }}-${{ steps.keystore.outputs.signed == 'true' && 'signed' || 'ci-debug' }}
+          path: |
+            release-apks/*.apk
+            release-apks/SHA256SUMS.txt
+            release-apks/VERIFY.txt
+          if-no-files-found: error
+          retention-days: 30
+
+  release:
+    name: Publish GitHub pre-release
+    needs: build
+    if: needs.build.outputs.tag != '' && needs.build.outputs.signed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: seekerog-${{ needs.build.outputs.version }}-signed
+          path: release-apks
+      - name: Release notes
+        run: |
+          NOTES=".github/release-notes/${{ needs.build.outputs.tag }}.md"
+          [ -f "$NOTES" ] || { echo "::error::$NOTES missing"; exit 1; }
+          cp "$NOTES" release-apks/RELEASE_NOTES.md
+          V="${{ needs.build.outputs.version }}"; BASE="${V%%-*}"; PRE="${V#"$BASE"}"; PRE="${PRE#-}"
+          TITLE="SeekerOG v$BASE"; [ -n "$PRE" ] && TITLE="$TITLE ${PRE^}"
+          echo "TITLE=$TITLE" >> "$GITHUB_ENV"
+      - uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
+        with:
+          tag_name: ${{ needs.build.outputs.tag }}
+          name: ${{ env.TITLE }}
+          body_path: release-apks/RELEASE_NOTES.md
+          prerelease: true
+          make_latest: 'false'
+          fail_on_unmatched_files: true
+          files: |
+            release-apks/SeekerOG-v${{ needs.build.outputs.version }}-arm64-v8a.apk
+            release-apks/SeekerOG-v${{ needs.build.outputs.version }}-armeabi-v7a.apk
+            release-apks/SHA256SUMS.txt
+            release-apks/VERIFY.txt
+            release-apks/RELEASE_NOTES.md

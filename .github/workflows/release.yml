@@ -13,6 +13,9 @@ on:
 
 jobs:
   build:
+    # Upstream (jackBonadies/SeekerAndroid) maintainer workflow: needs upstream secrets.
+    # SeekerOG uses seekerog-release.yml instead.
+    if: github.repository == 'jackBonadies/SeekerAndroid'
     name: Build Release IzzySoft on Ubuntu
     runs-on: ubuntu-latest
     environment: release-signing
