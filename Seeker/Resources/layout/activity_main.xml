@@ -37,12 +37,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
     >
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/pager"
+        <!-- pager + shared mini player (SeekerOG) -->
+        <LinearLayout
+            android:id="@+id/og_main_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/navigation"
-        />
+            android:orientation="vertical"
+        >
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+            />
+            <include layout="@layout/seekerog_mini_player" />
+        </LinearLayout>
 
         <!-- SeekerOG: floating glass navigation bar (insets handled in MainActivity.ApplyGlassNavInsets) -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
