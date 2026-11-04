@@ -1,4 +1,4 @@
-using Android.Content;
+﻿using Android.Content;
 using Common;
 using Common.Messages;
 using System;
@@ -8,7 +8,7 @@ namespace Seeker
 {
     public static class PreferencesManager
     {
-        private static readonly object SharedPrefLock = new object();
+        internal static readonly object SharedPrefLock = new object();
         private static readonly object TransferStateSaveLock = new object();
 
         /// <summary>
@@ -42,11 +42,20 @@ namespace Seeker
             PreferencesState.DayNightMode = prefs.GetInt(KeyConsts.M_DayNightMode, -1); // ModeNightFollowSystem
             PreferencesState.Language = prefs.GetString(KeyConsts.M_Lanuage, PreferencesState.FieldLangAuto);
             PreferencesState.LegacyLanguageMigrated = prefs.GetBoolean(KeyConsts.M_LegacyLanguageMigrated, false);
-            PreferencesState.NightModeVariant = (NightThemeType)(prefs.GetInt(KeyConsts.M_NightVariant, (int)NightThemeType.Modern));
-            PreferencesState.DayModeVariant = (DayThemeType)(prefs.GetInt(KeyConsts.M_DayVariant, (int)DayThemeType.Modern));
+            PreferencesState.NightModeVariant = (NightThemeType)(prefs.GetInt(KeyConsts.M_NightVariant, (int)NightThemeType.Glass));
+            PreferencesState.DayModeVariant = (DayThemeType)(prefs.GetInt(KeyConsts.M_DayVariant, (int)DayThemeType.Glass));
+            if (!System.Enum.IsDefined(typeof(NightThemeType), PreferencesState.NightModeVariant)) PreferencesState.NightModeVariant = NightThemeType.Glass;
+            if (!System.Enum.IsDefined(typeof(DayThemeType), PreferencesState.DayModeVariant)) PreferencesState.DayModeVariant = DayThemeType.Glass;
+            PreferencesState.AccentColor = (AccentColorType)prefs.GetInt(KeyConsts.M_OG_AccentColor, (int)AccentColorType.ThemeDefault);
+            PreferencesState.GlassIntensity = (GlassIntensityType)prefs.GetInt(KeyConsts.M_OG_GlassIntensity, (int)GlassIntensityType.Balanced);
+            PreferencesState.GlassBlur = prefs.GetBoolean(KeyConsts.M_OG_GlassBlur, true);
+            PreferencesState.ReduceVisualEffects = prefs.GetBoolean(KeyConsts.M_OG_ReduceEffects, false);
+            PreferencesState.UiAnimations = prefs.GetBoolean(KeyConsts.M_OG_Animations, true);
+            PreferencesState.TextScalePercent = prefs.GetInt(KeyConsts.M_OG_TextScale, 100);
             PreferencesState.ShowSmartFilters = prefs.GetBoolean(KeyConsts.M_ShowSmartFilters, true);
             PreferencesState.SmartFilterStyle = (Seeker.SmartFilterStyle)prefs.GetInt(KeyConsts.M_SmartFilterStyle, (int)Seeker.SmartFilterStyle.Flat);
             RestoreSmartFilterState(prefs);
+            SeekerOGStore.RestoreSearchTools(prefs);
         }
 
         public static void RestoreTransferSettings(ISharedPreferences prefs)
@@ -875,6 +884,12 @@ namespace Seeker
                 editor.PutInt    (KeyConsts.M_DayNightMode,                       PreferencesState.DayNightMode);
                 editor.PutInt    (KeyConsts.M_DayVariant,                         (int)PreferencesState.DayModeVariant);
                 editor.PutInt    (KeyConsts.M_NightVariant,                       (int)PreferencesState.NightModeVariant);
+                editor.PutInt    (KeyConsts.M_OG_AccentColor,                     (int)PreferencesState.AccentColor);
+                editor.PutInt    (KeyConsts.M_OG_GlassIntensity,                  (int)PreferencesState.GlassIntensity);
+                editor.PutBoolean(KeyConsts.M_OG_GlassBlur,                       PreferencesState.GlassBlur);
+                editor.PutBoolean(KeyConsts.M_OG_ReduceEffects,                   PreferencesState.ReduceVisualEffects);
+                editor.PutBoolean(KeyConsts.M_OG_Animations,                      PreferencesState.UiAnimations);
+                editor.PutInt    (KeyConsts.M_OG_TextScale,                       PreferencesState.TextScalePercent);
                 // Sharing
                 editor.PutBoolean(KeyConsts.M_SharingOn,                          PreferencesState.SharingOn);
                 editor.PutBoolean(KeyConsts.M_AllowUploadsOnMetered,              PreferencesState.AllowUploadsOnMetered);

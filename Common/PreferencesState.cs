@@ -1,4 +1,4 @@
-using Common.Messages;
+﻿using Common.Messages;
 using Seeker;
 using Seeker.Helpers;
 using System;
@@ -70,8 +70,15 @@ namespace Common
 
         // UI / Theme
         public static int DayNightMode = -1; // AppCompatDelegate.ModeNightFollowSystem
-        public static NightThemeType NightModeVariant = NightThemeType.Modern;
-        public static DayThemeType DayModeVariant = DayThemeType.Modern;
+        public static NightThemeType NightModeVariant = NightThemeType.Glass;
+        public static DayThemeType DayModeVariant = DayThemeType.Glass;
+        // SeekerOG appearance
+        public static AccentColorType AccentColor = AccentColorType.ThemeDefault;
+        public static GlassIntensityType GlassIntensity = GlassIntensityType.Balanced;
+        public static bool GlassBlur = true;
+        public static bool ReduceVisualEffects = false;
+        public static bool UiAnimations = true;
+        public static int TextScalePercent = 100;
         public static bool LegacyLanguageMigrated = false;
         public static string Language = FieldLangAuto;
 

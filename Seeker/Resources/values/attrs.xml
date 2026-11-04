@@ -80,4 +80,17 @@
     <attr name="navItemSelectedColor" format="color" />
     <attr name="sectionHeaderTextColor" format="color" />
     <attr name="navItemUnselectedColor" format="color" />
+    <!-- SeekerOG Glass design language -->
+    <attr name="glassWindowBackground" format="reference|color" />
+    <attr name="glassSurface" format="color" />
+    <attr name="glassSurfaceStrong" format="color" />
+    <attr name="glassStroke" format="color" />
+    <attr name="glassCardBackground" format="reference" />
+    <attr name="glassNavBackground" format="reference" />
+    <attr name="glassAccent" format="color" />
+    <attr name="glassAccentSecondary" format="color" />
+    <attr name="glassOnAccent" format="color" />
+    <attr name="glassTextPrimary" format="color" />
+    <attr name="glassTextSecondary" format="color" />
+    <attr name="glassCardColor" format="color" />
 </resources>

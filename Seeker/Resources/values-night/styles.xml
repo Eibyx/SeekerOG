@@ -1,4 +1,4 @@
-<resources>
+﻿<resources>
     <style name="OutlinedRoundedBox" parent="">
         <item name="shapeAppearanceOverlay">
             @style/ShapeAppearanceOverlay.MyApp.TextInputLayout.Rounded
@@ -24,6 +24,19 @@
     </style>
 
     <style name="AppTheme.NoActionBar">
+        <!-- SeekerOG glass defaults (classic themes keep their solid look) -->
+        <item name="glassWindowBackground">?attr/pseudo_window_background_color</item>
+        <item name="glassSurface">?attr/surface_variant1</item>
+        <item name="glassSurfaceStrong">?attr/dialog_background</item>
+        <item name="glassStroke">#22FFFFFF</item>
+        <item name="glassCardBackground">@drawable/glass_card_classic</item>
+        <item name="glassNavBackground">@drawable/glass_nav_classic</item>
+        <item name="glassAccent">?attr/mainPurple</item>
+        <item name="glassAccentSecondary">?attr/colorPrimary</item>
+        <item name="glassOnAccent">#FFFFFF</item>
+        <item name="glassTextPrimary">?attr/normalTextColor</item>
+        <item name="glassTextSecondary">?attr/cellTextColorSubdued</item>
+        <item name="glassCardColor">?attr/colorSurfaceLogin</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">#4f58c4</item>

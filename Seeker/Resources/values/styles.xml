@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+﻿<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your theme here. -->
@@ -35,6 +35,19 @@
     </style>
 
     <style name="AppTheme.NoActionBar">
+        <!-- SeekerOG glass defaults (classic themes keep their solid look) -->
+        <item name="glassWindowBackground">?attr/pseudo_window_background_color</item>
+        <item name="glassSurface">?attr/surface_variant1</item>
+        <item name="glassSurfaceStrong">?attr/dialog_background</item>
+        <item name="glassStroke">#22000000</item>
+        <item name="glassCardBackground">@drawable/glass_card_classic</item>
+        <item name="glassNavBackground">@drawable/glass_nav_classic</item>
+        <item name="glassAccent">?attr/mainPurple</item>
+        <item name="glassAccentSecondary">?attr/colorPrimary</item>
+        <item name="glassOnAccent">#FFFFFF</item>
+        <item name="glassTextPrimary">?attr/normalTextColor</item>
+        <item name="glassTextSecondary">?attr/cellTextColorSubdued</item>
+        <item name="glassCardColor">?attr/colorSurfaceLogin</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">#4f58c4</item>
@@ -243,5 +256,33 @@
     <style name="AppPopupMenu" parent="Widget.Material3.PopupMenu">
         <item name="android:popupBackground">@drawable/popup_menu_bg</item>
         <item name="android:popupElevation" tools:targetApi="21">8dp</item>
+    </style>
+
+    <!-- SeekerOG shared styles -->
+    <style name="SeekerOG.SectionLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.08</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">?attr/glassAccentSecondary</item>
+    </style>
+    <style name="SeekerOG.GlassCard" parent="Widget.Material3.CardView.Outlined">
+        <item name="cardBackgroundColor">?attr/glassCardColor</item>
+        <item name="strokeColor">?attr/glassStroke</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+    <style name="SeekerOG.PlayerButton" parent="">
+        <item name="android:layout_width">52dp</item>
+        <item name="android:layout_height">52dp</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:background">?android:attr/selectableItemBackgroundBorderless</item>
+        <item name="tint">?attr/glassTextPrimary</item>
     </style>
 </resources>

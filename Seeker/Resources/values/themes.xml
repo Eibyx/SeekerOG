@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--<style name="OutlinedRoundedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 		<item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MyApp.TextInputLayout.Rounded</item>
@@ -478,6 +478,194 @@
 
         <item name="navItemSelectedColor">#ffffff</item>
         <item name="navItemUnselectedColor">#ffffff</item>
+    </style>
+
+
+    <!-- ===================== SeekerOG Glass ===================== -->
+    <!-- Light glass: pale liquid background, translucent white surfaces, ocean-blue accent. -->
+    <style name="DefaultLight_Glass" parent="DefaultLight_Modern">
+        <item name="colorPrimary">#0A6FA3</item>
+        <item name="colorAccent">#00A3C4</item>
+        <item name="colorSecondaryContainer">#D3EAF6</item>
+        <item name="mainPurple">#0A6FA3</item>
+        <item name="mainTextColor">#0A5A85</item>
+        <item name="swipeToRefreshProgress">#0A6FA3</item>
+        <item name="checkBoxColor">#0A6FA3</item>
+        <item name="slskAccent">#0A6FA3</item>
+        <item name="cellStroke">#660A6FA3</item>
+        <item name="expandIconColor">#6FA7C7</item>
+        <item name="colorSurface">#F7FAFD</item>
+        <item name="colorSurfaceLogin">#F7FAFD</item>
+        <item name="pseudo_window_background_color">#F3F7FC</item>
+        <item name="android:windowBackground">@drawable/glass_bg_light</item>
+        <item name="appBarColor">#CCF7FAFD</item>
+        <item name="appBarIconColor">#1B2A3A</item>
+        <item name="appBarTextColor">#0E1A26</item>
+        <item name="appBarHintColor">#5B6B7A</item>
+        <item name="searchBarColor">#E6EEF6</item>
+        <item name="searchBarHighlightColor">#A7D3EC</item>
+        <item name="whitePurpleForNavBar">#D3EAF6</item>
+        <item name="navItemSelectedColor">#0A5A85</item>
+        <item name="navItemUnselectedColor">#5B6B7A</item>
+        <item name="filterBottomSheetBackground">#F2F7FB</item>
+        <item name="roomStatusesColor">#E3EDF5</item>
+        <item name="surface_variant1">#E8F0F7</item>
+        <item name="dialog_background">#F7FAFD</item>
+        <item name="checkCircleSelectedColor">#0A6FA3</item>
+        <item name="batchSelectHighlightColor">#400A6FA3</item>
+        <item name="snackbarActionColor">#7FD3F0</item>
+        <item name="CustomSelector">@drawable/CustomSelector_glass</item>
+        <item name="cellbackColor">#00000000</item>
+
+        <item name="glassWindowBackground">@drawable/glass_bg_light</item>
+        <item name="glassSurface">#B3FFFFFF</item>
+        <item name="glassCardColor">#B3FFFFFF</item>
+        <item name="glassSurfaceStrong">#E6FFFFFF</item>
+        <item name="glassStroke">#33FFFFFF</item>
+        <item name="glassCardBackground">@drawable/glass_card</item>
+        <item name="glassNavBackground">@drawable/glass_nav</item>
+        <item name="glassAccent">#0A6FA3</item>
+        <item name="glassAccentSecondary">#00B4D8</item>
+        <item name="glassOnAccent">#FFFFFF</item>
+        <item name="glassTextPrimary">#0E1A26</item>
+        <item name="glassTextSecondary">#5B6B7A</item>
+    </style>
+
+    <!-- Dark glass: deep navy liquid background, smoked translucent surfaces, cyan accent. -->
+    <style name="DefaultDark_Glass" parent="DefaultDark_Modern">
+        <item name="colorPrimary">#5CC8F0</item>
+        <item name="colorAccent">#5CC8F0</item>
+        <item name="colorSecondaryContainer">#123A55</item>
+        <item name="mainPurple">#1B7FB5</item>
+        <item name="mainTextColor">#9EDCF5</item>
+        <item name="mainTextColorHintedFlair">#9EDCF5</item>
+        <item name="sectionHeaderTextColor">#9EDCF5</item>
+        <item name="swipeToRefreshProgress">#5CC8F0</item>
+        <item name="checkBoxColor">#5CC8F0</item>
+        <item name="slskAccent">#5CC8F0</item>
+        <item name="cellStroke">#665CC8F0</item>
+        <item name="colorSurface">#0E1726</item>
+        <item name="colorSurfaceLogin">#142034</item>
+        <item name="pseudo_window_background_color">#ff0A101C</item>
+        <item name="android:windowBackground">@drawable/glass_bg_dark</item>
+        <item name="appBarColor">#CC0E1726</item>
+        <item name="appBarIconColor">#DCE7F2</item>
+        <item name="whitePurpleForNavBar">#1E4D6E</item>
+        <item name="navItemSelectedColor">#BDEBFF</item>
+        <item name="navItemUnselectedColor">#9AA8B8</item>
+        <item name="filterBottomSheetBackground">#142034</item>
+        <item name="surface_variant1">#ff17233A</item>
+        <item name="dialog_background">#ff142034</item>
+        <item name="secondaryColor">#ff17233A</item>
+        <item name="checkCircleSelectedColor">#1B7FB5</item>
+        <item name="batchSelectHighlightColor">#405CC8F0</item>
+        <item name="snackbarActionColor">#0A6FA3</item>
+        <item name="searchHeaderBackground">#00000000</item>
+        <item name="CustomSelector">@drawable/CustomSelector_glass</item>
+        <item name="cellbackColor">#00000000</item>
+        <item name="cellback">#ff0E1726</item>
+
+        <item name="glassWindowBackground">@drawable/glass_bg_dark</item>
+        <item name="glassSurface">#2EFFFFFF</item>
+        <item name="glassCardColor">#2EFFFFFF</item>
+        <item name="glassSurfaceStrong">#D9142034</item>
+        <item name="glassStroke">#29FFFFFF</item>
+        <item name="glassCardBackground">@drawable/glass_card</item>
+        <item name="glassNavBackground">@drawable/glass_nav</item>
+        <item name="glassAccent">#1B7FB5</item>
+        <item name="glassAccentSecondary">#5CC8F0</item>
+        <item name="glassOnAccent">#FFFFFF</item>
+        <item name="glassTextPrimary">#F2F6FA</item>
+        <item name="glassTextSecondary">#A9B6C4</item>
+    </style>
+
+    <!-- AMOLED glass: true black (pixels off), glass only as thin outlined surfaces. -->
+    <style name="Amoled_Glass" parent="Amoled">
+        <item name="colorPrimary">#5CC8F0</item>
+        <item name="colorAccent">#5CC8F0</item>
+        <item name="mainPurple">#0F5F8A</item>
+        <item name="mainTextColor">#9EDCF5</item>
+        <item name="normalTextColor">#E6F4FB</item>
+        <item name="sectionHeaderTextColor">#9EDCF5</item>
+        <item name="checkBoxColor">#5CC8F0</item>
+        <item name="slskAccent">#5CC8F0</item>
+        <item name="swipeToRefreshProgress">#5CC8F0</item>
+        <item name="appBarColor">#000000</item>
+        <item name="whitePurpleForNavBar">#123A55</item>
+        <item name="navItemSelectedColor">#BDEBFF</item>
+        <item name="navItemUnselectedColor">#8C96A3</item>
+        <item name="checkCircleSelectedColor">#0F5F8A</item>
+        <item name="batchSelectHighlightColor">#405CC8F0</item>
+
+        <item name="glassWindowBackground">@android:color/black</item>
+        <item name="glassSurface">#14FFFFFF</item>
+        <item name="glassCardColor">#14FFFFFF</item>
+        <item name="glassSurfaceStrong">#F0050505</item>
+        <item name="glassStroke">#33FFFFFF</item>
+        <item name="glassCardBackground">@drawable/glass_card</item>
+        <item name="glassNavBackground">@drawable/glass_nav</item>
+        <item name="glassAccent">#0F5F8A</item>
+        <item name="glassAccentSecondary">#5CC8F0</item>
+        <item name="glassOnAccent">#FFFFFF</item>
+        <item name="glassTextPrimary">#F2F6FA</item>
+        <item name="glassTextSecondary">#A0AAB6</item>
+    </style>
+
+    <!-- Accent overlays (Settings > Appearance > Accent colour). Applied on top of the theme. -->
+    <style name="SeekerOGAccent.Ocean" parent="">
+        <item name="colorPrimary">#0A6FA3</item><item name="mainPurple">#0A6FA3</item>
+        <item name="glassAccent">#0A6FA3</item><item name="glassAccentSecondary">#00B4D8</item>
+        <item name="checkBoxColor">#0A6FA3</item><item name="checkCircleSelectedColor">#0A6FA3</item>
+    </style>
+    <style name="SeekerOGAccent.Violet" parent="">
+        <item name="colorPrimary">#6C4CE0</item><item name="mainPurple">#6C4CE0</item>
+        <item name="glassAccent">#6C4CE0</item><item name="glassAccentSecondary">#A98BFF</item>
+        <item name="checkBoxColor">#6C4CE0</item><item name="checkCircleSelectedColor">#6C4CE0</item>
+    </style>
+    <style name="SeekerOGAccent.Emerald" parent="">
+        <item name="colorPrimary">#0E8F6E</item><item name="mainPurple">#0E8F6E</item>
+        <item name="glassAccent">#0E8F6E</item><item name="glassAccentSecondary">#3DD6A3</item>
+        <item name="checkBoxColor">#0E8F6E</item><item name="checkCircleSelectedColor">#0E8F6E</item>
+    </style>
+    <style name="SeekerOGAccent.Sunset" parent="">
+        <item name="colorPrimary">#D9622B</item><item name="mainPurple">#D9622B</item>
+        <item name="glassAccent">#D9622B</item><item name="glassAccentSecondary">#FFA24D</item>
+        <item name="checkBoxColor">#D9622B</item><item name="checkCircleSelectedColor">#D9622B</item>
+    </style>
+    <style name="SeekerOGAccent.Rose" parent="">
+        <item name="colorPrimary">#C2366B</item><item name="mainPurple">#C2366B</item>
+        <item name="glassAccent">#C2366B</item><item name="glassAccentSecondary">#FF7DA8</item>
+        <item name="checkBoxColor">#C2366B</item><item name="checkCircleSelectedColor">#C2366B</item>
+    </style>
+    <style name="SeekerOGAccent.Graphite" parent="">
+        <item name="colorPrimary">#46525F</item><item name="mainPurple">#46525F</item>
+        <item name="glassAccent">#46525F</item><item name="glassAccentSecondary">#8A9AAB</item>
+        <item name="checkBoxColor">#46525F</item><item name="checkCircleSelectedColor">#46525F</item>
+    </style>
+
+    <!-- Glass intensity overlays -->
+    <style name="SeekerOGGlass.Subtle" parent="">
+        <item name="glassSurface">?attr/surface_variant1</item>
+        <item name="glassCardColor">?attr/colorSurfaceLogin</item>
+        <item name="glassSurfaceStrong">?attr/dialog_background</item>
+    </style>
+    <style name="SeekerOGGlass.Intense.Light" parent="">
+        <item name="glassSurface">#80FFFFFF</item>
+        <item name="glassCardColor">#80FFFFFF</item>
+        <item name="glassSurfaceStrong">#B3FFFFFF</item>
+    </style>
+    <style name="SeekerOGGlass.Intense.Dark" parent="">
+        <item name="glassSurface">#1FFFFFFF</item>
+        <item name="glassCardColor">#1FFFFFFF</item>
+        <item name="glassSurfaceStrong">#99142034</item>
+    </style>
+    <!-- Reduce visual effects: solid surfaces, no gradient background -->
+    <style name="SeekerOGGlass.Reduced" parent="">
+        <item name="glassWindowBackground">?attr/pseudo_window_background_color</item>
+        <item name="android:windowBackground">?attr/pseudo_window_background_color</item>
+        <item name="glassSurface">?attr/surface_variant1</item>
+        <item name="glassSurfaceStrong">?attr/dialog_background</item>
+        <item name="glassCardColor">?attr/colorSurfaceLogin</item>
     </style>
 
 </resources>

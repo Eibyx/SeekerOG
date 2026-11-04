@@ -1,4 +1,4 @@
-namespace Common
+﻿namespace Common
 {
     public class KeyConsts
     {
@@ -49,6 +49,16 @@ namespace Common
         public const string M_LegacyLanguageMigrated = "Momento_LegacyLanugageMigrated";
         public const string M_NightVariant = "Momento_NightModeVarient";
         public const string M_DayVariant = "Momento_DayModeVarient";
+        public const string M_OG_AccentColor = "SeekerOG_AccentColor";
+        public const string M_OG_GlassIntensity = "SeekerOG_GlassIntensity";
+        public const string M_OG_GlassBlur = "SeekerOG_GlassBlur";
+        public const string M_OG_ReduceEffects = "SeekerOG_ReduceEffects";
+        public const string M_OG_Animations = "SeekerOG_Animations";
+        public const string M_OG_TextScale = "SeekerOG_TextScale";
+        public const string M_OG_SavedFilters = "SeekerOG_SavedFilterProfiles";
+        public const string M_OG_FavoriteSearches = "SeekerOG_FavoriteSearches";
+        public const string M_OG_Playlists = "SeekerOG_Playlists";
+        public const string M_OG_FavoriteTracks = "SeekerOG_FavoriteTracks";
         public const string M_AutoClearComplete = "Momento_AutoClearComplete";
         public const string M_AutoClearCompleteUploads = "Momento_AutoClearCompleteUploads";
         public const string M_RememberSearchHistory = "Momento_RememberSearchHistory";

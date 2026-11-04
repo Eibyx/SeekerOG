@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Transparent rows so the glass background shows through; pressed/selected states stay visible -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape><solid android:color="#330A6FA3" /></shape>
+    </item>
+    <item android:state_selected="true" android:drawable="@color/cellbackSelected" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

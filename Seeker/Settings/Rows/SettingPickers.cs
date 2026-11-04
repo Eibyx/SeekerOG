@@ -1,4 +1,4 @@
-using Android.Content;
+﻿using Android.Content;
 using Common;
 using Seeker.Helpers;
 using System.Collections.Generic;
@@ -86,7 +86,7 @@ namespace Seeker.Settings.Rows
             var ctx = host.Activity;
             var variants = new[]
             {
-                DayThemeType.Modern, DayThemeType.ClassicPurple, DayThemeType.Red, DayThemeType.Blue, DayThemeType.Grey,
+                DayThemeType.Glass, DayThemeType.Modern, DayThemeType.ClassicPurple, DayThemeType.Red, DayThemeType.Blue, DayThemeType.Grey,
             };
             var options = new List<(string label, DayThemeType value)>(variants.Length);
             foreach (var variant in variants)
@@ -113,7 +113,7 @@ namespace Seeker.Settings.Rows
             var ctx = host.Activity;
             var variants = new[]
             {
-                NightThemeType.Modern, NightThemeType.ClassicPurple, NightThemeType.Grey, NightThemeType.Blue,
+                NightThemeType.Glass, NightThemeType.AmoledGlass, NightThemeType.Modern, NightThemeType.ClassicPurple, NightThemeType.Grey, NightThemeType.Blue,
                 NightThemeType.Red, NightThemeType.AmoledClassicPurple, NightThemeType.AmoledGrey,
             };
             var options = new List<(string label, NightThemeType value)>(variants.Length);
