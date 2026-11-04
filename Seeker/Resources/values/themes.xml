@@ -520,6 +520,8 @@
         <item name="glassWindowBackground">@drawable/glass_bg_light</item>
         <item name="glassSurface">#B3FFFFFF</item>
         <item name="glassCardColor">#B3FFFFFF</item>
+        <item name="glassOutline">#1A0E1A26</item>
+        <item name="glassFieldColor">#CCFFFFFF</item>
         <item name="glassSurfaceStrong">#E6FFFFFF</item>
         <item name="glassStroke">#33FFFFFF</item>
         <item name="glassCardBackground">@drawable/glass_card</item>
@@ -568,6 +570,8 @@
         <item name="glassWindowBackground">@drawable/glass_bg_dark</item>
         <item name="glassSurface">#2EFFFFFF</item>
         <item name="glassCardColor">#2EFFFFFF</item>
+        <item name="glassOutline">#24FFFFFF</item>
+        <item name="glassFieldColor">#1AFFFFFF</item>
         <item name="glassSurfaceStrong">#D9142034</item>
         <item name="glassStroke">#29FFFFFF</item>
         <item name="glassCardBackground">@drawable/glass_card</item>
@@ -600,6 +604,8 @@
         <item name="glassWindowBackground">@android:color/black</item>
         <item name="glassSurface">#14FFFFFF</item>
         <item name="glassCardColor">#14FFFFFF</item>
+        <item name="glassOutline">#2EFFFFFF</item>
+        <item name="glassFieldColor">#12FFFFFF</item>
         <item name="glassSurfaceStrong">#F0050505</item>
         <item name="glassStroke">#33FFFFFF</item>
         <item name="glassCardBackground">@drawable/glass_card</item>

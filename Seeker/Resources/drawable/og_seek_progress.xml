@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Thick rounded seek track; the played part is tinted at runtime with the artwork colour -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background" android:gravity="center_vertical|fill_horizontal" android:height="6dp">
+        <shape><solid android:color="#33FFFFFF" /><corners android:radius="3dp" /></shape>
+    </item>
+    <item android:id="@android:id/secondaryProgress" android:gravity="center_vertical|fill_horizontal" android:height="6dp">
+        <scale android:scaleWidth="100%"><shape><solid android:color="#22FFFFFF" /><corners android:radius="3dp" /></shape></scale>
+    </item>
+    <item android:id="@android:id/progress" android:gravity="center_vertical|fill_horizontal" android:height="6dp">
+        <scale android:scaleWidth="100%"><shape><solid android:color="#FFFFFFFF" /><corners android:radius="3dp" /></shape></scale>
+    </item>
+</layer-list>

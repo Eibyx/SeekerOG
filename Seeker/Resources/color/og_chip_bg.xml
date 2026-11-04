@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:color="?attr/glassFieldColor" android:alpha="0.5" />
+    <item android:state_checked="true" android:color="?attr/glassAccentSecondary" android:alpha="0.22" />
+    <item android:state_pressed="true" android:color="?attr/glassAccentSecondary" android:alpha="0.12" />
+    <item android:color="?attr/glassFieldColor" />
+</selector>
