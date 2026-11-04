@@ -94,6 +94,10 @@ jobs:
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             TAG="${{ inputs.tag }}"
           fi
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "$TAG" ] && [ "$GITHUB_REF" != "refs/heads/master" ]; then
+            echo "::error::Releases can only be dispatched from master (got $GITHUB_REF)"
+            exit 1
+          fi
           if [ -n "$TAG" ] && [ "$TAG" != "v$VERSION" ]; then
             echo "::error::Tag $TAG does not match ApplicationDisplayVersion v$VERSION in Seeker/Seeker.csproj"
             exit 1
@@ -101,11 +105,13 @@ jobs:
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
           echo "tag=$TAG" >> "$GITHUB_OUTPUT"
 
+      # Signing secrets are only handed to steps of authorised release runs
+      # (v* tag push, or manual dispatch with a tag from master). Branch / PR builds never see them.
       - name: Decode release keystore
         id: keystore
         env:
-          KS_B64: ${{ secrets.SEEKEROG_KEYSTORE_BASE64 }}
-          STORE_PASS: ${{ secrets.SEEKEROG_STORE_PASSWORD }}
+          KS_B64: ${{ steps.meta.outputs.tag != '' && secrets.SEEKEROG_KEYSTORE_BASE64 || '' }}
+          STORE_PASS: ${{ steps.meta.outputs.tag != '' && secrets.SEEKEROG_STORE_PASSWORD || '' }}
         run: |
           if [ -n "$KS_B64" ] && [ -n "$STORE_PASS" ]; then
             mkdir -p "$RUNNER_TEMP/ks"
@@ -124,9 +130,9 @@ jobs:
 
       - name: Build per-ABI APKs
         env:
-          SEEKEROG_STORE_PASS: ${{ secrets.SEEKEROG_STORE_PASSWORD }}
-          SEEKEROG_KEY_PASS: ${{ secrets.SEEKEROG_KEY_PASSWORD }}
-          SEEKEROG_KEY_ALIAS: ${{ secrets.SEEKEROG_KEY_ALIAS }}
+          SEEKEROG_STORE_PASS: ${{ steps.keystore.outputs.signed == 'true' && secrets.SEEKEROG_STORE_PASSWORD || '' }}
+          SEEKEROG_KEY_PASS: ${{ steps.keystore.outputs.signed == 'true' && secrets.SEEKEROG_KEY_PASSWORD || '' }}
+          SEEKEROG_KEY_ALIAS: ${{ steps.keystore.outputs.signed == 'true' && secrets.SEEKEROG_KEY_ALIAS || '' }}
         run: |
           [ -n "$SEEKEROG_KEY_ALIAS" ] || export SEEKEROG_KEY_ALIAS=seekerog
           [ -n "$SEEKEROG_KEY_PASS" ] || unset SEEKEROG_KEY_PASS
@@ -171,6 +177,7 @@ jobs:
       - uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
         with:
           tag_name: ${{ needs.build.outputs.tag }}
+          target_commitish: ${{ github.sha }}
           name: ${{ env.TITLE }}
           body_path: release-apks/RELEASE_NOTES.md
           prerelease: true
