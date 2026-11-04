@@ -1,4 +1,4 @@
-using Android.Content;
+﻿using Android.Content;
 using Android.OS;
 using Android.Text;
 using Android.Text.Style;
@@ -121,7 +121,7 @@ namespace Seeker
                     option.IsChecked = true;
                     var hypotheticalFilter = SearchFilter.ParseChips(searchTab.ChipDataItems);
                     int x = responses.Count(s => SearchFilter.MatchesAllCriteria(
-                        s, hypotheticalFilter, mergedFlags, wordsToAvoid, wordsToInclude, hideLocked));
+                        s, hypotheticalFilter, mergedFlags, wordsToAvoid, wordsToInclude, hideLocked, searchTab.TextFilter.Advanced, searchTab.QueryFilter));
                     counts[option] = x;
                 }
             }

@@ -207,6 +207,14 @@ namespace Seeker
             Services.DownloadService.Instance = new Services.DownloadService(Toaster, Services.FileSystemService.Instance, Services.SessionService.Instance, new Services.MainThreadRunner(), () => SeekerState.SoulseekClient, loggerBackend, new Services.AndroidNetworkStatus());
             Services.UserInfoPictureCacheService.Instance = new Services.UserInfoPictureCacheService();
 
+            // SeekerOG advanced search: providers for fav:/downloaded: filters (local data only).
+            AdvancedQuery.IsFavoriteUserProvider = username => UserListService.Instance.ContainsUser(username);
+            AdvancedQuery.IsAlreadyDownloadedProvider = (username, filename) =>
+            {
+                var item = Seeker.TransferItems.TransferItemManagerDL?.GetTransferItemWithIndexFromAll(filename, username, out _);
+                return item != null && item.State.HasFlag(Soulseek.TransferStates.Succeeded);
+            };
+
 #if DEBUG
             Android.OS.StrictMode.SetThreadPolicy(
                 new Android.OS.StrictMode.ThreadPolicy.Builder()

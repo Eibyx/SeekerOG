@@ -11,6 +11,39 @@
         android:iconifiedByDefault="true"
     />
 
+    <!-- SeekerOG search tools -->
+    <item
+        android:id="@+id/action_og_advanced_filters"
+        android:title="@string/seekerog_advanced_filters"
+        app:showAsAction="never"
+    />
+    <item
+        android:id="@+id/action_og_filter_profiles"
+        android:title="@string/seekerog_filter_profiles"
+        app:showAsAction="never"
+    />
+    <item
+        android:id="@+id/action_og_hide_duplicates"
+        android:title="@string/seekerog_hide_duplicates"
+        android:checkable="true"
+        app:showAsAction="never"
+    />
+    <item
+        android:id="@+id/action_og_favorite_search"
+        android:title="@string/seekerog_favorite_search"
+        app:showAsAction="never"
+    />
+    <item
+        android:id="@+id/action_og_export"
+        android:title="@string/seekerog_export_results"
+        app:showAsAction="never"
+    />
+    <item
+        android:id="@+id/action_og_syntax_help"
+        android:title="@string/seekerog_syntax_help_title"
+        app:showAsAction="never"
+    />
+
     <!-- Settings, should always be in the overflow -->
     <item
         android:id="@+id/action_search_target"
