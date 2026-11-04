@@ -21,6 +21,9 @@ namespace Seeker
         public SearchResultSorting SortHelperSorting = PreferencesState.DefaultSearchResultSortAlgorithm;
         public object SortHelperLockObject = new object();
         public TextFilter TextFilter = new TextFilter(supportsSpecialFlags: true);
+        /// <summary>Local filters typed in the search box itself (format:flac, size&lt;100MB, ...). Not sent to the server.</summary>
+        public AdvancedQuery? QueryFilter = null;
+        public bool HasQueryFilter => QueryFilter != null && QueryFilter.HasLocalFilters;
         public bool FilterSticky = false;
         public List<SearchResponse> UI_SearchResponses = new List<SearchResponse>();
         public SearchTarget SearchTarget = SearchTarget.AllUsers;
@@ -79,6 +82,7 @@ namespace Seeker
             clone.LastRanTime = this.LastRanTime;
             clone.ChipDataItems = this.ChipDataItems;
             clone.ChipsFilter = this.ChipsFilter;
+            clone.QueryFilter = this.QueryFilter;
             foreach (var r in this.UnseenResults)
             {
                 clone.UnseenResults.Add(r);
