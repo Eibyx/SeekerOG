@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -292,8 +292,7 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/bottom_sheet_behavior"
         android:id="@+id/bottomSheet"
-        android:background="@drawable/bottom_sheet_header_bg"
-        android:backgroundTint="?attr/filterBottomSheetBackground"
+        android:background="@drawable/og_sheet_bg"
     >
         <LinearLayout
             android:layout_width="match_parent"
@@ -301,24 +300,66 @@
             android:orientation="vertical"
         >
             <View
-                android:layout_width="32dp"
-                android:layout_height="4dp"
+                android:layout_width="36dp"
+                android:layout_height="5dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/search_bottom_sheet_drag_handle"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="6dp"
+                android:alpha="0.5"
+                android:background="@drawable/og_sheet_handle"
             />
+            <!-- SeekerOG: quick filter header -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="22dp"
+                android:paddingEnd="14dp"
+                android:paddingBottom="6dp"
+            >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/seekerog_quick_filter_title"
+                    android:textColor="?attr/glassTextPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                />
+                <TextView
+                    android:id="@+id/og_quick_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:background="@drawable/og_info_pill"
+                    android:gravity="center"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="?attr/glassTextSecondary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                />
+                <!-- room for the floating filter button anchored at the top-right corner -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                />
+            </LinearLayout>
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/SeekerOG.Field"
                 android:id="@+id/filterLineOne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginTop="2dp"
-                android:layout_marginBottom="6dp"
+                android:layout_marginBottom="4dp"
                 android:hint="@string/filter_search_results_here"
-                app:boxBackgroundColor="?attr/dialog_background"
+                app:startIconDrawable="@drawable/og_search"
+                app:endIconMode="custom"
+                app:endIconDrawable="@drawable/og_tune"
+                app:endIconContentDescription="@string/seekerog_advanced_filters"
             >
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/filterText"
@@ -329,6 +370,60 @@
                     android:imeOptions="actionDone"
                 />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:scrollbars="none"
+            >
+                <com.google.android.material.chip.ChipGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingHorizontal="8dp"
+                    app:singleLine="true"
+                >
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/og_quick_advanced"
+                        style="@style/SeekerOG.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/seekerog_quick_advanced"
+                        app:chipIcon="@drawable/og_tune"
+                        app:chipIconVisible="true"
+                    />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/og_quick_profiles"
+                        style="@style/SeekerOG.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/seekerog_quick_profiles"
+                        app:chipIcon="@drawable/og_wishlist"
+                        app:chipIconVisible="true"
+                    />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/og_quick_dupes"
+                        style="@style/SeekerOG.Chip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checkable="true"
+                        android:text="@string/seekerog_quick_dupes"
+                    />
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/og_quick_help"
+                        style="@style/SeekerOG.Chip.Action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/seekerog_syntax"
+                        app:chipIcon="@drawable/og_info"
+                        app:chipIconVisible="true"
+                    />
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -486,38 +581,39 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="14dp"
                 android:layout_height="wrap_content"
             >
-                <Button
-                    android:layout_marginTop="0dp"
-                    style="@style/SeekerButtonStyle"
-                    android:foreground="@drawable/button"
+                <com.google.android.material.button.MaterialButton
+                    style="@style/SeekerOG.Button.Tonal"
                     android:text="Show Smart Filters"
                     android:id="@+id/toggleSmartFilters"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:minWidth="0dp"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/og_summary"
+                    app:iconSize="18dp"
                 />
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1"
                 />
-                <com.google.android.material.checkbox.MaterialCheckBox
+                <!-- Chip extends CheckBox, so existing code keeps working with it -->
+                <com.google.android.material.chip.Chip
+                    style="@style/SeekerOG.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="end"
-                    android:textSize="16sp"
                     android:id="@+id/stickyFilterCheckbox"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:checkable="true"
                     android:text="@string/persist_it"
+                    app:chipIcon="@drawable/og_pin"
+                    app:chipIconVisible="true"
+                    app:checkedIconVisible="false"
                 />
             </LinearLayout>
         </LinearLayout>
@@ -526,9 +622,9 @@
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="?attr/mainPurple"
-        android:background="?attr/mainPurple"
-        app:tint="@android:color/white"
+        android:backgroundTint="?attr/glassAccent"
+        app:tint="?attr/glassOnAccent"
+        app:shapeAppearanceOverlay="@style/SeekerOG.Shape.Fab"
         app:layout_anchor="@id/bottomSheet"
         app:borderWidth="0dp"
         app:fabSize="mini"
