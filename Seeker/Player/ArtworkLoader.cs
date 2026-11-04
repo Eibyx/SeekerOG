@@ -1,4 +1,4 @@
-using Common;
+﻿using Common;
 using Seeker.Helpers;
 using Android.Content;
 using Android.Graphics;
@@ -127,7 +127,7 @@ namespace Seeker.Player
                 // average over the whole file (container overhead and artwork included) - labelled as approximate
                 bitrate = "~" + (long)(track.Size * 8 / (track.DurationMs / 1000.0) / 1000) + " kbps";
             }
-            return string.Format(context.GetString(Resource.String.seekerog_quality_line), codec, bitrate, sampleRate, bits, channels);
+            return context.GetString(Resource.String.seekerog_quality_line, codec, bitrate, sampleRate, bits, channels);
         }
 
         /// <summary>Describes the current audio output route (speaker, Bluetooth, wired, USB DAC).</summary>

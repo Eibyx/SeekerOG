@@ -1,4 +1,4 @@
-using Common;
+﻿using Common;
 using Seeker.Helpers;
 using Android;
 using Android.App;
@@ -284,7 +284,7 @@ namespace Seeker.Library
                             string name = string.IsNullOrEmpty(g.Key) ? GetString(Resource.String.seekerog_unknown) : g.Key;
                             int albums = tracks.Select(t => t.AlbumId).Distinct().Count();
                             rows.Add(new LibraryAdapter.Row(Resource.Drawable.og_person, name,
-                                string.Format(GetString(Resource.String.seekerog_lib_albums_count), albums), tracks.Count.ToString(), () => Drill(name, tracks)));
+                                GetString(Resource.String.seekerog_lib_albums_count, albums), tracks.Count.ToString(), () => Drill(name, tracks)));
                         }
                         break;
                     case Mode.Folders:

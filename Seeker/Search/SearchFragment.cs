@@ -1380,7 +1380,7 @@ namespace Seeker
             var parsed = AdvancedQuery.Parse(filter ?? string.Empty);
             if (parsed.Warnings.Count > 0)
             {
-                SeekerApplication.Toaster.ShowToast(string.Format(SeekerApplication.GetString(Resource.String.seekerog_filter_warning), string.Join(" ", parsed.Warnings)), ToastLength.Long);
+                SeekerApplication.Toaster.ShowToast(SeekerApplication.ApplicationContext.GetString(Resource.String.seekerog_filter_warning, string.Join(" ", parsed.Warnings)), ToastLength.Long);
             }
         }
 
