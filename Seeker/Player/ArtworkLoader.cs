@@ -68,14 +68,40 @@ namespace Seeker.Player
         /// <summary>
         /// Human readable technical info. Values that the container / decoder does not expose are shown as unknown.
         /// </summary>
-        public static string DescribeQuality(Context context, LibraryTrack track)
+        /// <summary>
+        /// Technical facts read from the file (MediaExtractor + MediaStore). Null / 0 = not exposed
+        /// by the container or decoder (shown as unknown, never guessed).
+        /// </summary>
+        public sealed class AudioQuality
         {
-            string unknown = context.GetString(Resource.String.seekerog_unknown);
-            string codec = track.Extension.Length > 0 ? track.Extension : unknown;
-            string sampleRate = unknown, channels = unknown, bitrate = unknown, bits = unknown;
+            public string Extension = string.Empty;
+            public string Codec = string.Empty;     // mime subtype, e.g. "flac", "mpeg", "mp4a-latm"
+            public int BitrateKbps;                 // 0 = unknown
+            public bool BitrateApproximate;         // computed from size / duration
+            public int SampleRateHz;                // 0 = unknown
+            public string BitDepth = string.Empty;  // "" = unknown, e.g. "16 bit", "32 bit float"
+            public int BitDepthBits;                // 0 = unknown
+            public int Channels;                    // 0 = unknown
+
+            private static readonly System.Collections.Generic.HashSet<string> LosslessExt =
+                new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase) { "FLAC", "WAV", "AIFF", "AIF", "ALAC", "APE", "WV", "DSF", "DFF" };
+
+            public bool IsLossless => LosslessExt.Contains(Extension) || Codec == "flac" || Codec == "raw" || Codec == "alac";
+            /// <summary>Hi-Res = known to exceed CD quality (bit depth &gt; 16 or sample rate &gt; 48 kHz).</summary>
+            public bool IsHiRes => IsLossless && (BitDepthBits > 16 || SampleRateHz > 48000);
+
+            public string SampleRateText(string unknown) => SampleRateHz > 0 ? (SampleRateHz / 1000.0).ToString("0.###", CultureInfo.InvariantCulture) + " kHz" : unknown;
+            public string BitrateText(string unknown) => BitrateKbps > 0 ? (BitrateApproximate ? "~" : "") + BitrateKbps + " kbps" : unknown;
+            public string BitDepthText(string unknown) => BitDepth.Length > 0 ? BitDepth : unknown;
+            public string ChannelsText(string unknown) => Channels switch { 0 => unknown, 1 => "Mono", 2 => "Stereo", _ => Channels + " ch" };
+        }
+
+        public static AudioQuality Probe(Context context, LibraryTrack track)
+        {
+            var q = new AudioQuality { Extension = track.Extension };
             if (track.BitrateBps > 0)
             {
-                bitrate = (track.BitrateBps / 1000) + " kbps";
+                q.BitrateKbps = track.BitrateBps / 1000;
             }
             var extractor = new MediaExtractor();
             try
@@ -89,27 +115,19 @@ namespace Seeker.Player
                     {
                         continue;
                     }
-                    codec = codec + " (" + mime.Substring(6) + ")";
-                    if (f.ContainsKey(MediaFormat.KeySampleRate))
-                    {
-                        sampleRate = (f.GetInteger(MediaFormat.KeySampleRate) / 1000.0).ToString("0.###", CultureInfo.InvariantCulture) + " kHz";
-                    }
-                    if (f.ContainsKey(MediaFormat.KeyChannelCount))
-                    {
-                        channels = f.GetInteger(MediaFormat.KeyChannelCount).ToString(CultureInfo.InvariantCulture);
-                    }
-                    if (bitrate == unknown && f.ContainsKey(MediaFormat.KeyBitRate))
-                    {
-                        bitrate = (f.GetInteger(MediaFormat.KeyBitRate) / 1000) + " kbps";
-                    }
+                    q.Codec = mime.Substring(6);
+                    if (f.ContainsKey(MediaFormat.KeySampleRate)) q.SampleRateHz = f.GetInteger(MediaFormat.KeySampleRate);
+                    if (f.ContainsKey(MediaFormat.KeyChannelCount)) q.Channels = f.GetInteger(MediaFormat.KeyChannelCount);
+                    if (q.BitrateKbps == 0 && f.ContainsKey(MediaFormat.KeyBitRate)) q.BitrateKbps = f.GetInteger(MediaFormat.KeyBitRate) / 1000;
                     if (f.ContainsKey("bits-per-sample"))
                     {
-                        bits = f.GetInteger("bits-per-sample") + " bit";
+                        q.BitDepthBits = f.GetInteger("bits-per-sample");
+                        q.BitDepth = q.BitDepthBits + " bit";
                     }
                     else if (OperatingSystem.IsAndroidVersionAtLeast(24) && f.ContainsKey(MediaFormat.KeyPcmEncoding))
                     {
                         int enc = f.GetInteger(MediaFormat.KeyPcmEncoding);
-                        bits = enc switch { 2 => "16 bit", 3 => "8 bit", 4 => "32 bit float", 21 => "24 bit", 22 => "32 bit", _ => unknown };
+                        (q.BitDepthBits, q.BitDepth) = enc switch { 2 => (16, "16 bit"), 3 => (8, "8 bit"), 4 => (32, "32 bit float"), 21 => (24, "24 bit"), 22 => (32, "32 bit"), _ => (0, string.Empty) };
                     }
                     break;
                 }
@@ -122,12 +140,21 @@ namespace Seeker.Player
             {
                 try { extractor.Release(); } catch (Exception) { }
             }
-            if (bitrate == unknown && track.DurationMs > 0 && track.Size > 0)
+            if (q.BitrateKbps == 0 && track.DurationMs > 0 && track.Size > 0)
             {
                 // average over the whole file (container overhead and artwork included) - labelled as approximate
-                bitrate = "~" + (long)(track.Size * 8 / (track.DurationMs / 1000.0) / 1000) + " kbps";
+                q.BitrateKbps = (int)(track.Size * 8 / (track.DurationMs / 1000.0) / 1000);
+                q.BitrateApproximate = true;
             }
-            return context.GetString(Resource.String.seekerog_quality_line, codec, bitrate, sampleRate, bits, channels);
+            return q;
+        }
+
+        public static string DescribeQuality(Context context, LibraryTrack track)
+        {
+            string unknown = context.GetString(Resource.String.seekerog_unknown);
+            var q = Probe(context, track);
+            string codec = (q.Extension.Length > 0 ? q.Extension : unknown) + (q.Codec.Length > 0 ? " (" + q.Codec + ")" : string.Empty);
+            return context.GetString(Resource.String.seekerog_quality_line, codec, q.BitrateText(unknown), q.SampleRateText(unknown), q.BitDepthText(unknown), q.Channels > 0 ? q.Channels.ToString(CultureInfo.InvariantCulture) : unknown);
         }
 
         /// <summary>Describes the current audio output route (speaker, Bluetooth, wired, USB DAC).</summary>

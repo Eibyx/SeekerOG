@@ -1,4 +1,4 @@
-using Common;
+﻿using Common;
 using Seeker.Helpers;
 using Android.App;
 using Android.Content;
@@ -64,6 +64,95 @@ namespace Seeker.Player
         private NoisyReceiver? noisyReceiver;
         private Handler? handler;
 
+        /// <summary>Where the queue came from (album / playlist name...), shown in the player header.</summary>
+        public static string QueueSource { get; private set; } = string.Empty;
+
+        public static void PlayQueue(Context context, IList<LibraryTrack> tracks, int startIndex, string source)
+        {
+            QueueSource = source ?? string.Empty;
+            PlayQueue(context, tracks, startIndex);
+        }
+
+        /// <summary>The track that will play after the current one (respects shuffle), or null.</summary>
+        public static LibraryTrack? UpNext
+        {
+            get
+            {
+                if (Queue.Count < 2 || Index < 0) return null;
+                if (Repeat == RepeatMode.One) return Current;
+                int pos = Shuffle && shuffleOrder.Count == Queue.Count ? shuffleOrder.IndexOf(Index) : Index;
+                pos++;
+                if (pos >= Queue.Count)
+                {
+                    if (Repeat == RepeatMode.Off) return null;
+                    pos = 0;
+                }
+                return Shuffle && shuffleOrder.Count == Queue.Count ? Queue[shuffleOrder[pos]] : Queue[pos];
+            }
+        }
+
+        /// <summary>Drag-to-reorder support. Keeps the currently playing track playing.</summary>
+        public static void MoveQueueItem(int from, int to)
+        {
+            if (from == to || from < 0 || to < 0 || from >= Queue.Count || to >= Queue.Count)
+            {
+                return;
+            }
+            var current = Current;
+            var item = Queue[from];
+            Queue.RemoveAt(from);
+            Queue.Insert(to, item);
+            if (current != null)
+            {
+                Index = Queue.IndexOf(current);
+            }
+            RebuildShuffle();
+            RaiseChanged();
+        }
+
+        /// <summary>Swipe-to-remove support. Removing the playing track skips to the next one.</summary>
+        public static void RemoveFromQueue(int index)
+        {
+            if (index < 0 || index >= Queue.Count)
+            {
+                return;
+            }
+            bool wasCurrent = index == Index;
+            Queue.RemoveAt(index);
+            if (Queue.Count == 0)
+            {
+                Index = -1;
+                Instance?.StopAll();
+                return;
+            }
+            if (index < Index)
+            {
+                Index--;
+            }
+            else if (wasCurrent)
+            {
+                Index = Math.Min(index, Queue.Count - 1);
+                RebuildShuffle();
+                Instance?.LoadCurrent(IsPlaying);
+                return;
+            }
+            RebuildShuffle();
+            RaiseChanged();
+        }
+
+        /// <summary>Inserts a track right after the current one.</summary>
+        public static void PlayNext(Context context, LibraryTrack t)
+        {
+            if (Current == null)
+            {
+                PlayQueue(context, new List<LibraryTrack> { t }, 0);
+                return;
+            }
+            Queue.Insert(Index + 1, t);
+            RebuildShuffle();
+            RaiseChanged();
+        }
+
         public static void PlayQueue(Context context, IList<LibraryTrack> tracks, int startIndex)
         {
             if (tracks == null || tracks.Count == 0)
@@ -73,6 +162,7 @@ namespace Seeker.Player
             Queue = tracks.ToList();
             Index = Math.Max(0, Math.Min(startIndex, Queue.Count - 1));
             RebuildShuffle();
+            RaiseChanged();
             var intent = new Intent(context, typeof(PlaybackService));
             intent.SetAction(ActionStart);
             if (OperatingSystem.IsAndroidVersionAtLeast(26))
@@ -121,7 +211,12 @@ namespace Seeker.Player
 
         private static void RebuildShuffle()
         {
-            shuffleOrder = Enumerable.Range(0, Queue.Count).OrderBy(_ => rng.Next()).ToList();
+            var order = Enumerable.Range(0, Queue.Count).Where(i => i != Index).OrderBy(_ => rng.Next()).ToList();
+            if (Index >= 0 && Index < Queue.Count)
+            {
+                order.Insert(0, Index);
+            }
+            shuffleOrder = order;
         }
 
         private static void RaiseChanged()
@@ -200,7 +295,7 @@ namespace Seeker.Player
 
         // ---------------------------------------------------------------- playback
 
-        private void LoadCurrent(bool playWhenReady)
+        internal void LoadCurrent(bool playWhenReady)
         {
             var track = Current;
             if (track == null)

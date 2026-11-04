@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:paddingStart="10dp"
+    android:paddingEnd="10dp">
+    <LinearLayout
+        android:id="@+id/og_q_surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="6dp"
+        android:paddingEnd="4dp">
+        <ImageView
+            android:id="@+id/og_q_handle"
+            android:layout_width="36dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/seekerog_reorder"
+            android:padding="6dp"
+            android:src="@drawable/og_drag_handle"
+            app:tint="?attr/glassTextSecondary" />
+        <FrameLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/og_q_art"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/og_art_placeholder"
+                android:scaleType="centerCrop"
+                app:shapeAppearance="@style/SeekerOG.Shape.Chip" />
+            <ImageView
+                android:id="@+id/og_q_playing"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/og_now_playing_overlay"
+                android:padding="12dp"
+                android:src="@drawable/og_equalizer"
+                android:visibility="gone"
+                app:tint="#FFFFFFFF" />
+        </FrameLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/og_q_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?attr/glassTextPrimary"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/og_q_artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?attr/glassTextSecondary"
+                android:textSize="12sp" />
+        </LinearLayout>
+        <TextView
+            android:id="@+id/og_q_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="?attr/glassTextSecondary"
+            android:textSize="12sp" />
+    </LinearLayout>
+</FrameLayout>
