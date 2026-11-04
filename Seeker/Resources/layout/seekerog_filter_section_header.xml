@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Filter section header: icon badge + title + subtitle + "active" counter pill -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+    <FrameLayout
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/og_icon_badge">
+        <ImageView
+            android:id="@+id/og_sec_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            app:tint="?attr/glassOnAccent" />
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/og_sec_title"
+            style="@style/SeekerOG.CardTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/og_sec_subtitle"
+            style="@style/SeekerOG.CardSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/og_sec_count"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:background="@drawable/og_info_pill_accent"
+        android:gravity="center"
+        android:minWidth="24dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textColor="?attr/glassOnAccent"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+</LinearLayout>

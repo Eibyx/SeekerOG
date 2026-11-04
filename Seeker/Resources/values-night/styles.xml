@@ -37,6 +37,8 @@
         <item name="glassTextPrimary">?attr/normalTextColor</item>
         <item name="glassTextSecondary">?attr/cellTextColorSubdued</item>
         <item name="glassCardColor">?attr/colorSurfaceLogin</item>
+        <item name="glassOutline">#26FFFFFF</item>
+        <item name="glassFieldColor">?attr/dialog_background</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="colorPrimary">#4f58c4</item>

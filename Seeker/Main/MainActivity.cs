@@ -178,6 +178,7 @@ namespace Seeker
 
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
             navigation.SetOnNavigationItemSelectedListener(this);
+            miniPlayer = new Seeker.Player.MiniPlayerController(this, FindViewById(Resource.Id.og_main_content)!);
             // SeekerOG: floating glass bar sits above the system navigation bar
             AndroidX.Core.View.ViewCompat.SetOnApplyWindowInsetsListener(navigation,
                 new GlassNavInsetsListener((int)(10 * Resources.DisplayMetrics.Density)));
@@ -530,6 +531,13 @@ namespace Seeker
             //so then the FragmentManager will be null among other things...
             SeekerState.MainActivityRef = this;
             base.OnStart();
+            miniPlayer?.Attach();
+        }
+
+        protected override void OnStop()
+        {
+            miniPlayer?.Detach();
+            base.OnStop();
         }
         public static bool fromNotificationMoveToUploads = false;
         protected override void OnNewIntent(Intent intent)
@@ -1193,6 +1201,8 @@ namespace Seeker
             }
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
+        private Seeker.Player.MiniPlayerController miniPlayer;
 
         // ---------------------------------------------------------------- SeekerOG home helpers
 

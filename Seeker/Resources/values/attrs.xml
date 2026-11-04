@@ -93,4 +93,6 @@
     <attr name="glassTextPrimary" format="color" />
     <attr name="glassTextSecondary" format="color" />
     <attr name="glassCardColor" format="color" />
+    <attr name="glassOutline" format="color" />
+    <attr name="glassFieldColor" format="color" />
 </resources>

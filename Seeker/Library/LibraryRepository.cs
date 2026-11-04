@@ -207,6 +207,9 @@ namespace Seeker.Library
                 || t.Folder.StartsWith(downloadFolderName, StringComparison.OrdinalIgnoreCase);
         }
 
+        /// <summary>Playback position: 0 is a real position ("0:00"), unlike an unknown duration.</summary>
+        public static string FormatPosition(long ms) => ms <= 0 ? "0:00" : FormatDuration(ms);
+
         public static string FormatDuration(long ms)
         {
             if (ms <= 0) return "--:--";

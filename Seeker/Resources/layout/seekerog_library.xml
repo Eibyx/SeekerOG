@@ -3,86 +3,113 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="?attr/glassWindowBackground"
     android:fitsSystemWindows="true"
-    android:background="?attr/glassWindowBackground">
+    android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/og_library_toolbar"
+    <!-- header -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/transparent"
-        app:navigationIcon="?attr/homeAsUpIndicator"
-        app:title="@string/seekerog_nav_library" />
+        android:layout_height="64dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+        <ImageButton
+            android:id="@+id/og_library_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/seekerog_close"
+            android:src="?attr/homeAsUpIndicator"
+            app:tint="?attr/glassTextPrimary" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/og_library_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/seekerog_nav_library"
+                android:textColor="?attr/glassTextPrimary"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/og_library_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/glassTextSecondary"
+                android:textSize="12sp" />
+        </LinearLayout>
+        <ImageButton
+            android:id="@+id/og_library_rescan"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/seekerog_rescan"
+            android:padding="12dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/og_refresh"
+            app:tint="?attr/glassTextPrimary" />
+    </LinearLayout>
 
-    <EditText
-        android:id="@+id/og_library_search"
+    <!-- search -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/SeekerOG.Field"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:background="@drawable/glass_search_field"
-        android:drawableStart="@drawable/og_search"
-        android:drawablePadding="10dp"
-        android:drawableTint="?attr/glassTextSecondary"
         android:hint="@string/seekerog_library_search_hint"
-        android:imeOptions="actionSearch"
-        android:inputType="text"
-        android:maxLines="1"
+        app:endIconMode="clear_text"
+        app:hintEnabled="false"
+        app:startIconDrawable="@drawable/og_search">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/og_library_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/seekerog_library_search_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textColor="?attr/glassTextPrimary"
+            android:textSize="15sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- tabs as chips -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:clipToPadding="false"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:textColor="?attr/glassTextPrimary"
-        android:textColorHint="?attr/glassTextSecondary"
-        android:textSize="15sp" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/og_library_tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
-        android:background="@android:color/transparent"
-        app:tabMode="scrollable"
-        app:tabIndicatorFullWidth="false"
-        app:tabIndicatorColor="?attr/glassAccentSecondary"
-        app:tabSelectedTextColor="?attr/glassTextPrimary"
-        app:tabTextColor="?attr/glassTextSecondary" />
-
-    <LinearLayout
-        android:id="@+id/og_library_crumb"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="8dp"
-        android:visibility="gone">
-        <TextView
-            android:id="@+id/og_library_crumb_text"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textColor="?attr/glassTextPrimary" />
-        <Button
-            android:id="@+id/og_library_play_all"
-            style="@style/Widget.Material3.Button.TextButton"
+        android:scrollbars="none">
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/og_library_tabs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/seekerog_play_all" />
-    </LinearLayout>
+            app:chipSpacingHorizontal="8dp"
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true" />
+    </HorizontalScrollView>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="6dp"
         android:layout_weight="1">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/og_library_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:paddingBottom="12dp" />
         <TextView
             android:id="@+id/og_library_empty"
@@ -95,45 +122,5 @@
             android:visibility="gone" />
     </FrameLayout>
 
-    <!-- mini player -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/og_mini_player"
-        style="@style/SeekerOG.GlassCard"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="10dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        android:visibility="gone">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="8dp">
-            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/og_music_note" app:tint="?attr/glassAccentSecondary" />
-            <TextView
-                android:id="@+id/og_mini_title"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:textColor="?attr/glassTextPrimary"
-                android:textSize="15sp" />
-            <ImageButton
-                android:id="@+id/og_mini_toggle"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/og_play"
-                android:contentDescription="@string/seekerog_player_play"
-                app:tint="?attr/glassTextPrimary" />
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+    <include layout="@layout/seekerog_mini_player" />
 </LinearLayout>

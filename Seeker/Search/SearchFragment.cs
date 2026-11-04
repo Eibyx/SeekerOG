@@ -423,7 +423,7 @@ namespace Seeker
                     return true;
                 // ---- SeekerOG search tools ----
                 case Resource.Id.action_og_advanced_filters:
-                    AdvancedFilterDialog.Show(this.Activity, SearchTabHelper.TextFilter.FilterString ?? string.Empty, ApplyAdvancedFilter);
+                    AdvancedFilterDialog.Show(this.Activity, SearchTabHelper.TextFilter.FilterString ?? string.Empty, ApplyAdvancedFilter, CountMatchesForCurrentTab);
                     return true;
                 case Resource.Id.action_og_filter_profiles:
                     AdvancedFilterDialog.ShowProfiles(this.Activity, ApplyAdvancedFilter);
@@ -431,6 +431,8 @@ namespace Seeker
                 case Resource.Id.action_og_hide_duplicates:
                     SearchTools.HideDuplicates = !SearchTools.HideDuplicates;
                     item.SetChecked(SearchTools.HideDuplicates);
+                    var dupesChip = rootView?.FindViewById<CompoundButton>(Resource.Id.og_quick_dupes);
+                    if (dupesChip != null) dupesChip.Checked = SearchTools.HideDuplicates;
                     SeekerOGStore.SaveSearchTools();
                     RefreshOnChipChanged();
                     return true;
@@ -1138,6 +1140,7 @@ namespace Seeker
             showHideSmartFilters.Click += ShowHideSmartFilters_Click;
 
             SetupFilterControls();
+            SetupQuickFilterChips();
 
             return rootView;
         }
@@ -1365,6 +1368,39 @@ namespace Seeker
             else
             {
                 return SearchTabHelper.SearchTabCollection[SearchTabHelper.CurrentTab].ChipDataItems.Any(i => i.IsChecked);
+            }
+        }
+
+        /// <summary>
+        /// SeekerOG: how many results of the current tab would remain with this filter text
+        /// (same pipeline as the real filter: chips, query filters, text filter). Runs off the UI thread.
+        /// </summary>
+        internal static int CountMatchesForCurrentTab(string filter)
+        {
+            try
+            {
+                if (!SearchTabHelper.SearchTabCollection.TryGetValue(SearchTabHelper.CurrentTab, out SearchTab tab))
+                {
+                    return 0;
+                }
+                List<SearchResponse> snapshot;
+                lock (tab.SortHelperLockObject)
+                {
+                    snapshot = tab.SearchResponses.ToList();
+                }
+                var tf = new TextFilter(supportsSpecialFlags: true);
+                if (!string.IsNullOrWhiteSpace(filter))
+                {
+                    tf.Set(filter);
+                }
+                bool hideLocked = PreferencesState.HideLockedResultsInSearch;
+                var flags = MergeFilterFlags(tf.FilterSpecialFlags);
+                var matching = snapshot.Where(r => SearchFilter.MatchesAllCriteria(r, tab.ChipsFilter, flags, tf.WordsToAvoid, tf.WordsToInclude, hideLocked, tf.Advanced, tab.QueryFilter));
+                return SearchTools.HideDuplicates ? SearchTools.RemoveDuplicates(matching, hideLocked).Count : matching.Count();
+            }
+            catch (System.Exception)
+            {
+                return 0;
             }
         }
 
@@ -2122,6 +2158,56 @@ namespace Seeker
         private void NotifySearchHeaderChanged()
         {
             RefreshSearchResultsHeader(searchResultsHeaderView);
+            UpdateQuickFilterCount();
+        }
+
+        /// <summary>SeekerOG quick filter sheet: "visible / total" pill, highlighted while filtering.</summary>
+        private void UpdateQuickFilterCount()
+        {
+            var pill = rootView?.FindViewById<TextView>(Resource.Id.og_quick_count);
+            if (pill == null || !SearchTabHelper.SearchTabCollection.ContainsKey(SearchTabHelper.CurrentTab))
+            {
+                return;
+            }
+            int total = SearchTabHelper.SearchResponses?.Count ?? 0;
+            bool filtering = SearchTabHelper.TextFilter.IsFiltered || AreChipsFiltering() || AreFilterControlsActive();
+            int shown = filtering ? (SearchTabHelper.UI_SearchResponses?.Count ?? 0) : total;
+            pill.Text = filtering ? shown + " / " + total : total.ToString();
+            pill.SetBackgroundResource(filtering ? Resource.Drawable.og_info_pill_accent : Resource.Drawable.og_info_pill);
+            var ta = this.Activity?.Theme?.ObtainStyledAttributes(new[] { filtering ? Resource.Attribute.glassOnAccent : Resource.Attribute.glassTextSecondary });
+            if (ta != null)
+            {
+                pill.SetTextColor(ta.GetColor(0, Android.Graphics.Color.Gray));
+                ta.Recycle();
+            }
+        }
+
+        private void SetupQuickFilterChips()
+        {
+            Action openAdvanced = () => AdvancedFilterDialog.Show(this.Activity, SearchTabHelper.TextFilter.FilterString ?? string.Empty, ApplyAdvancedFilter, CountMatchesForCurrentTab);
+            rootView.FindViewById<View>(Resource.Id.og_quick_advanced).Click += (s, e) => openAdvanced();
+            rootView.FindViewById<Google.Android.Material.TextField.TextInputLayout>(Resource.Id.filterLineOne)
+                .SetEndIconOnClickListener(new ClickListener(openAdvanced));
+            rootView.FindViewById<View>(Resource.Id.og_quick_profiles).Click += (s, e) => AdvancedFilterDialog.ShowProfiles(this.Activity, ApplyAdvancedFilter);
+            rootView.FindViewById<View>(Resource.Id.og_quick_help).Click += (s, e) => AdvancedFilterDialog.ShowSyntaxHelp(this.Activity);
+            var dupes = rootView.FindViewById<CompoundButton>(Resource.Id.og_quick_dupes);
+            dupes.Checked = SearchTools.HideDuplicates;
+            dupes.CheckedChange += (s, e) =>
+            {
+                if (SearchTools.HideDuplicates == e.IsChecked) return;
+                SearchTools.HideDuplicates = e.IsChecked;
+                SeekerOGStore.SaveSearchTools();
+                RefreshOnChipChanged();
+                this.Activity?.InvalidateOptionsMenu();
+            };
+            UpdateQuickFilterCount();
+        }
+
+        private class ClickListener : Java.Lang.Object, View.IOnClickListener
+        {
+            private readonly Action action;
+            public ClickListener(Action action) { this.action = action; }
+            public void OnClick(View v) => action();
         }
 
 

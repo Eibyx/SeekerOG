@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
+    android:background="@drawable/og_section_card"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="8dp">
+    <FrameLayout
+        android:id="@+id/og_album_art_frame"
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/og_album_art"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/og_art_placeholder"
+            android:scaleType="centerCrop"
+            app:shapeAppearance="@style/SeekerOG.Shape.Field" />
+    </FrameLayout>
+    <TextView
+        android:id="@+id/og_album_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?attr/glassTextPrimary"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+    <TextView
+        android:id="@+id/og_album_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="2dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?attr/glassTextSecondary"
+        android:textSize="12sp" />
+</LinearLayout>

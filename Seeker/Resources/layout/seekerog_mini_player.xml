@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SeekerOG mini player: floating glass card with artwork, titles, play/pause, next and a hairline progress -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/og_mini_root"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/og_mini_player_bg"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="6dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/og_mini_art"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop"
+            android:background="@drawable/og_art_placeholder"
+            android:contentDescription="@string/seekerog_album_art"
+            app:shapeAppearance="@style/SeekerOG.Shape.Chip" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/og_mini_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?attr/glassTextPrimary"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/og_mini_artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?attr/glassTextSecondary"
+                android:textSize="13sp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/og_mini_toggle"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:background="@drawable/glass_pill_accent"
+            android:padding="11dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/og_play"
+            android:contentDescription="@string/seekerog_player_play"
+            app:tint="?attr/glassOnAccent" />
+
+        <ImageButton
+            android:id="@+id/og_mini_next"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="2dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/og_next"
+            android:contentDescription="@string/seekerog_player_next"
+            app:tint="?attr/glassTextPrimary" />
+    </LinearLayout>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/og_mini_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="22dp"
+        android:max="1000"
+        app:trackThickness="2dp"
+        app:trackCornerRadius="1dp"
+        app:indicatorColor="?attr/glassAccentSecondary"
+        app:trackColor="@android:color/transparent" />
+</FrameLayout>
