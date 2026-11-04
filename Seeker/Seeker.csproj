@@ -11,8 +11,8 @@
     <!-- SeekerOG identity: own package id so it installs side by side with upstream Seeker -->
     <ApplicationTitle>SeekerOG</ApplicationTitle>
     <ApplicationId>com.eibyx.seekerog</ApplicationId>
-    <ApplicationDisplayVersion>0.1.0-alpha</ApplicationDisplayVersion>
-    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>0.2.0-alpha</ApplicationDisplayVersion>
+    <ApplicationVersion>2</ApplicationVersion>
     <Copyright>Copyright ©  2018</Copyright>
     <AssemblyVersion>1.1.0.0</AssemblyVersion>
     <FileVersion>1.1.0.0</FileVersion>
