@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2021 Seeker
  *
  * This file is part of Seeker
@@ -86,6 +86,7 @@ namespace Seeker
             MessageController.MessageReceived += OnMessageReceivedUpdateBadge;
             MessagesBroadcastReceiver.MarkAsReadFromNotification += OnMarkAsReadUpdateBadge;
             UpdateUnreadBadge();
+            homeDashboard?.Refresh();
 
             SessionService.LoginStarted += OnLoginStarted;
             SessionService.LoginCompleted += OnLoginCompleted;
@@ -279,7 +280,11 @@ namespace Seeker
             };
             menuSettings.Click += Settings_Click;
             menuLogout.Click += LogoutClick;
+
+            homeDashboard = new HomeDashboard(rootView);
         }
+
+        private HomeDashboard homeDashboard;
 
         // --- View-flipping methods ---
 
@@ -317,6 +322,7 @@ namespace Seeker
 
                 UpdateUnreadBadge();
                 UpdateServerMessage();
+                homeDashboard?.Refresh();
 
                 if (UploadDirectoryManager.UploadDirectories == null || UploadDirectoryManager.UploadDirectories.Count == 0)
                 {

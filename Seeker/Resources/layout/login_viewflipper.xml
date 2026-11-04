@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ViewFlipper
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -169,11 +169,11 @@
         android:id="@+id/loggedInLayout"
     >
         <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.Material3.CardView.Elevated"
+            style="@style/SeekerOG.GlassCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardBackgroundColor="?attr/colorSurfaceLogin"
+            app:cardCornerRadius="18dp"
+            app:cardBackgroundColor="?attr/glassCardColor"
             android:layout_marginTop="20dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
@@ -255,14 +255,17 @@
                 android:orientation="vertical"
                 android:paddingBottom="16dp"
             >
+                <!-- SeekerOG glass dashboard -->
+                <include layout="@layout/seekerog_home_dashboard" />
+
                 <!-- Server message (GlobalAdminMessage) -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/serverMessageCard"
-                    style="@style/Widget.Material3.CardView.Elevated"
+                    style="@style/SeekerOG.GlassCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="?attr/colorSurfaceLogin"
+                    app:cardCornerRadius="18dp"
+                    app:cardBackgroundColor="?attr/glassCardColor"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginTop="16dp"
@@ -346,11 +349,11 @@
                 <!-- Select Download Directory row -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/mustSelectDirectory"
-                    style="@style/Widget.Material3.CardView.Elevated"
+                    style="@style/SeekerOG.GlassCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="?attr/colorSurfaceLogin"
+                    app:cardCornerRadius="18dp"
+                    app:cardBackgroundColor="?attr/glassCardColor"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="4dp"
@@ -396,11 +399,11 @@
                 <!-- Set Up Sharing row -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/menuSetUpSharing"
-                    style="@style/Widget.Material3.CardView.Elevated"
+                    style="@style/SeekerOG.GlassCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="?attr/colorSurfaceLogin"
+                    app:cardCornerRadius="18dp"
+                    app:cardBackgroundColor="?attr/glassCardColor"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="4dp"
@@ -446,11 +449,11 @@
                 <!-- Manage User List row -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/menuManageUserList"
-                    style="@style/Widget.Material3.CardView.Elevated"
+                    style="@style/SeekerOG.GlassCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="?attr/colorSurfaceLogin"
+                    app:cardCornerRadius="18dp"
+                    app:cardBackgroundColor="?attr/glassCardColor"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="4dp"
@@ -509,11 +512,11 @@
                 <!-- Messages row -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/menuMessages"
-                    style="@style/Widget.Material3.CardView.Elevated"
+                    style="@style/SeekerOG.GlassCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="?attr/colorSurfaceLogin"
+                    app:cardCornerRadius="18dp"
+                    app:cardBackgroundColor="?attr/glassCardColor"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="4dp"
@@ -581,11 +584,11 @@
                 <!-- Settings row -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/menuSettings"
-                    style="@style/Widget.Material3.CardView.Elevated"
+                    style="@style/SeekerOG.GlassCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="?attr/colorSurfaceLogin"
+                    app:cardCornerRadius="18dp"
+                    app:cardBackgroundColor="?attr/glassCardColor"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="4dp"
@@ -630,11 +633,11 @@
                 <!-- Log Out row -->
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/menuLogout"
-                    style="@style/Widget.Material3.CardView.Elevated"
+                    style="@style/SeekerOG.GlassCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="12dp"
-                    app:cardBackgroundColor="?attr/colorSurfaceLogin"
+                    app:cardCornerRadius="18dp"
+                    app:cardBackgroundColor="?attr/glassCardColor"
                     android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="4dp"
