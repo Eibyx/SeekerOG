@@ -505,6 +505,19 @@ namespace Seeker
             return true;
         }
 
+        public static bool MatchesAllCriteria(SearchResponse s, ChipFilter chipsFilter, FilterSpecialFlags filterSpecialFlags, List<string> wordsToAvoid, List<string> wordsToInclude, bool hideLocked, AdvancedQuery? textAdvanced, AdvancedQuery? queryAdvanced)
+        {
+            if (queryAdvanced != null && queryAdvanced.HasLocalFilters && !queryAdvanced.ResponseMatches(s, hideLocked))
+            {
+                return false;
+            }
+            if (textAdvanced != null && !textAdvanced.ResponseMatches(s, hideLocked))
+            {
+                return false;
+            }
+            return MatchesAllCriteria(s, chipsFilter, filterSpecialFlags, wordsToAvoid, wordsToInclude, hideLocked);
+        }
+
         public static bool MatchesAllCriteria(SearchResponse s, ChipFilter chipsFilter, FilterSpecialFlags filterSpecialFlags, List<string> wordsToAvoid, List<string> wordsToInclude, bool hideLocked)
         {
             if (!MatchesCriteria(s, hideLocked, wordsToAvoid, wordsToInclude))

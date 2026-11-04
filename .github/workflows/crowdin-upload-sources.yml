@@ -12,6 +12,9 @@ on:
 
 jobs:
   upload:
+    # Upstream (jackBonadies/SeekerAndroid) maintainer workflow: needs upstream secrets.
+    # SeekerOG uses seekerog-release.yml instead.
+    if: github.repository == 'jackBonadies/SeekerAndroid'
     name: Push English strings to Crowdin
     runs-on: ubuntu-latest
 

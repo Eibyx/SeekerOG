@@ -8,6 +8,8 @@ namespace Seeker
         public List<string> WordsToAvoid { get; private set; } = new List<string>();
         public List<string> WordsToInclude { get; private set; } = new List<string>();
         public FilterSpecialFlags? FilterSpecialFlags { get; private set; } = null;
+        /// <summary>SeekerOG advanced syntax (format:flac bits:24 size&lt;100MB ...). Null when the filter only uses the classic syntax.</summary>
+        public AdvancedQuery? Advanced { get; private set; } = null;
         public bool IsFiltered => !string.IsNullOrEmpty(FilterString);
 
         private readonly bool supportsSpecialFlags;
@@ -28,9 +30,22 @@ namespace Seeker
             List<string> wordsToAvoid = new List<string>();
             List<string> wordsToInclude = new List<string>();
             FilterSpecialFlags? specialFlags = supportsSpecialFlags ? new FilterSpecialFlags() : null;
-            SearchFilter.ParseFilterString(filterString, wordsToAvoid, wordsToInclude, specialFlags);
+            AdvancedQuery? advanced = null;
+            if (supportsSpecialFlags)
+            {
+                var parsed = AdvancedQuery.Parse(filterString);
+                if (parsed.HasLocalFilters)
+                {
+                    advanced = parsed;
+                }
+            }
+            if (advanced == null)
+            {
+                SearchFilter.ParseFilterString(filterString, wordsToAvoid, wordsToInclude, specialFlags);
+            }
 
             FilterString = filterString;
+            Advanced = advanced;
             WordsToAvoid = wordsToAvoid;
             WordsToInclude = wordsToInclude;
             FilterSpecialFlags = specialFlags;
@@ -39,6 +54,7 @@ namespace Seeker
         public void Reset()
         {
             FilterString = string.Empty;
+            Advanced = null;
             WordsToAvoid = new List<string>();
             WordsToInclude = new List<string>();
             FilterSpecialFlags = supportsSpecialFlags ? new FilterSpecialFlags() : null;

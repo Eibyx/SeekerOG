@@ -1,4 +1,4 @@
-using AndroidX.AppCompat.App;
+﻿using AndroidX.AppCompat.App;
 using Common;
 using Seeker.Helpers;
 using Seeker.Managers;
@@ -380,6 +380,8 @@ namespace Seeker.Settings.Rows
                 ValueProvider = ctx => SettingValueFormat.NightVariantLabel(ctx, PreferencesState.NightModeVariant),
                 OnClick = (h, r) => SettingPickers.PickNightVariant(h, r),
             });
+
+            SettingPickersGlass.AddRows(rows);
 
             // ============================== SHARING ==============================
             rows.Add(new HeaderRow { Id = "h.sharing", TitleRes = Resource.String.section_sharing });

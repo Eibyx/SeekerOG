@@ -178,6 +178,9 @@ namespace Seeker
 
             BottomNavigationView navigation = FindViewById<BottomNavigationView>(Resource.Id.navigation);
             navigation.SetOnNavigationItemSelectedListener(this);
+            // SeekerOG: floating glass bar sits above the system navigation bar
+            AndroidX.Core.View.ViewCompat.SetOnApplyWindowInsetsListener(navigation,
+                new GlassNavInsetsListener((int)(10 * Resources.DisplayMetrics.Density)));
 
 
             AndroidX.AppCompat.Widget.Toolbar myToolbar = (AndroidX.AppCompat.Widget.Toolbar)FindViewById(Resource.Id.toolbar);
@@ -1009,8 +1012,23 @@ namespace Seeker
             var navigator = FindViewById<BottomNavigationView>(Resource.Id.navigation);
             if (navigator != null)
             {
-                navigator.Menu.GetItem(position).SetCheckable(true); //necessary if side scrolling...
-                navigator.Menu.GetItem(position).SetChecked(true);
+                // SeekerOG nav: Home(0) Search(1) Transfers(2) Library Settings. Pager page 3 (Browse)
+                // has no bottom bar entry, so nothing is highlighted while browsing.
+                if (position <= 2)
+                {
+                    navigator.Menu.SetGroupCheckable(0, true, true);
+                    navigator.Menu.GetItem(position).SetCheckable(true); //necessary if side scrolling...
+                    navigator.Menu.GetItem(position).SetChecked(true);
+                }
+                else
+                {
+                    navigator.Menu.SetGroupCheckable(0, true, false);
+                    for (int i = 0; i < navigator.Menu.Size(); i++)
+                    {
+                        navigator.Menu.GetItem(i).SetChecked(false);
+                    }
+                    navigator.Menu.SetGroupCheckable(0, true, true);
+                }
             }
             //Gate options-menu visibility to the current tab. FragmentStateAdapter (unlike
             //FragmentPagerAdapter) does not call setMenuVisibility per primary item, so without this
@@ -1176,6 +1194,41 @@ namespace Seeker
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
+        // ---------------------------------------------------------------- SeekerOG home helpers
+
+        public void NavigateToPage(int page)
+        {
+            pager?.SetCurrentItem(page, false);
+        }
+
+        /// <summary>Runs a search typed on the Home screen (advanced syntax supported).</summary>
+        public void SearchFromHome(string term)
+        {
+            if (pager == null)
+            {
+                return;
+            }
+            pager.SetCurrentItem(1, false);
+            pager.PostDelayed(() =>
+            {
+                if (SearchFragment.Instance != null)
+                {
+                    SearchFragment.SubmitSearchFromDialog(term);
+                }
+            }, 250);
+        }
+
+        /// <summary>Applies a saved filter profile to the current search results.</summary>
+        public void ApplyFilterFromHome(string filter)
+        {
+            if (pager == null)
+            {
+                return;
+            }
+            pager.SetCurrentItem(1, false);
+            pager.PostDelayed(() => SearchFragment.Instance?.ApplyAdvancedFilter(filter), 250);
+        }
+
         public bool OnNavigationItemSelected(IMenuItem item)
         {
             switch (item.ItemId)
@@ -1189,9 +1242,12 @@ namespace Seeker
                 case Resource.Id.navigation_transfers:
                     pager.SetCurrentItem(2, false);
                     break;
-                case Resource.Id.navigation_browse:
-                    pager.SetCurrentItem(3, false);
-                    break;
+                case Resource.Id.navigation_library:
+                    StartActivity(new Intent(this, typeof(Seeker.Library.LibraryActivity)));
+                    return false; // separate screen, keep current tab highlighted
+                case Resource.Id.navigation_settings:
+                    StartActivity(new Intent(this, typeof(SettingsActivity)));
+                    return false;
             }
             return true;
         }

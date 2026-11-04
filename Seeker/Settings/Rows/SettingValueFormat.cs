@@ -1,4 +1,4 @@
-using Android.Content;
+﻿using Android.Content;
 using Common;
 using Seeker.Helpers;
 using Seeker.Managers;
@@ -118,6 +118,7 @@ namespace Seeker.Settings.Rows
             DayThemeType.Blue => ctx.GetString(Resource.String.theme_blue),
             DayThemeType.Grey => ctx.GetString(Resource.String.theme_grey),
             DayThemeType.Modern => ctx.GetString(Resource.String.theme_modern),
+            DayThemeType.Glass => ctx.GetString(Resource.String.seekerog_theme_glass),
             _ => v.ToString(),
         };
 
@@ -130,6 +131,8 @@ namespace Seeker.Settings.Rows
             NightThemeType.AmoledClassicPurple => Amoled(ctx, Resource.String.theme_purple),
             NightThemeType.AmoledGrey => Amoled(ctx, Resource.String.theme_grey),
             NightThemeType.Modern => ctx.GetString(Resource.String.theme_modern),
+            NightThemeType.Glass => ctx.GetString(Resource.String.seekerog_theme_glass),
+            NightThemeType.AmoledGlass => "AMOLED - " + ctx.GetString(Resource.String.seekerog_theme_glass),
             _ => v.ToString(),
         };
 

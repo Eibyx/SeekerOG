@@ -7,6 +7,9 @@ on:
 
 jobs:
   apps:
+    # Upstream (jackBonadies/SeekerAndroid) maintainer workflow: needs upstream secrets.
+    # SeekerOG uses seekerog-release.yml instead.
+    if: github.repository == 'jackBonadies/SeekerAndroid'
     name: "Generate repo from apps listing"
     runs-on: ubuntu-latest
 

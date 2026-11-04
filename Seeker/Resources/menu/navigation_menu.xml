@@ -1,25 +1,30 @@
-﻿<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SeekerOG navigation: Inicio - Buscar - Transferencias - Biblioteca - Ajustes.
+     Browse (user shares) stays reachable from Home, user menus and links. -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/baseline_home_white_24"
         android:title="@string/home_tab"
     />
-
     <item
         android:id="@+id/navigation_search"
         android:icon="@drawable/baseline_search_white_24"
         android:title="@string/searches_tab2"
     />
-
     <item
         android:id="@+id/navigation_transfers"
         android:icon="@drawable/baseline_swap_vert_white_24"
         android:title="@string/transfer_tab"
     />
-
     <item
-        android:id="@+id/navigation_browse"
-        android:icon="@drawable/baseline_folder_white_24"
-        android:title="@string/browse_tab"
+        android:id="@+id/navigation_library"
+        android:icon="@drawable/ic_og_library"
+        android:title="@string/seekerog_nav_library"
+    />
+    <item
+        android:id="@+id/navigation_settings"
+        android:icon="@drawable/ic_og_settings"
+        android:title="@string/seekerog_nav_settings"
     />
 </menu>

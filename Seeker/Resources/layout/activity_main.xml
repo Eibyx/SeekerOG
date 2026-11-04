@@ -1,10 +1,10 @@
-<RelativeLayout
+﻿<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_root"
     android:layout_width="match_parent"
-    android:background="?attr/pseudo_window_background_color"
+    android:background="?attr/glassWindowBackground"
     android:layout_height="match_parent"
 >
     <com.google.android.material.appbar.AppBarLayout
@@ -44,17 +44,20 @@
             android:layout_above="@id/navigation"
         />
 
+        <!-- SeekerOG: floating glass navigation bar (insets handled in MainActivity.ApplyGlassNavInsets) -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fitsSystemWindows="true"
             app:itemIconTint="@color/nav_item_tint"
             app:labelVisibilityMode="labeled"
-            android:layout_marginEnd="0dp"
-            android:layout_marginStart="0dp"
-            android:layout_marginBottom="0dp"
-            android:background="?attr/appBarColor"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="10dp"
+            android:background="?attr/glassNavBackground"
+            android:elevation="0dp"
+            app:elevation="0dp"
+            app:paddingBottomSystemWindowInsets="false"
             app:itemActiveIndicatorStyle="@style/BottomNavActiveIndicator"
             app:itemTextColor="@color/nav_item_tint"
             app:itemTextAppearanceActive="@style/navTextActive"

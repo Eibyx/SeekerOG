@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SeekerOG Glass home dashboard (shown above the classic Home menu when logged in) -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/og_home_dashboard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="12dp">
+
+    <!-- prominent search -->
+    <com.google.android.material.card.MaterialCardView
+        style="@style/SeekerOG.GlassCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/seekerog_home_title"
+                android:textColor="?attr/glassTextPrimary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/og_home_search"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/glass_search_field"
+                android:drawableStart="@drawable/og_search"
+                android:drawablePadding="10dp"
+                android:drawableTint="?attr/glassAccentSecondary"
+                android:hint="@string/seekerog_home_search_hint"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:textColor="?attr/glassTextPrimary"
+                android:textColorHint="?attr/glassTextSecondary"
+                android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/seekerog_home_search_tip"
+                android:textColor="?attr/glassTextSecondary"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- quick actions -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:clipToPadding="false"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:scrollbars="none">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <include android:id="@+id/og_qa_browse" layout="@layout/seekerog_quick_action" />
+            <include android:id="@+id/og_qa_library" layout="@layout/seekerog_quick_action" />
+            <include android:id="@+id/og_qa_messages" layout="@layout/seekerog_quick_action" />
+            <include android:id="@+id/og_qa_rooms" layout="@layout/seekerog_quick_action" />
+            <include android:id="@+id/og_qa_users" layout="@layout/seekerog_quick_action" />
+            <include android:id="@+id/og_qa_filters" layout="@layout/seekerog_quick_action" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- active transfers -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/og_home_transfers"
+        style="@style/SeekerOG.GlassCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+            <TextView style="@style/SeekerOG.SectionLabel" android:layout_marginTop="0dp" android:text="@string/seekerog_home_transfers" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <include android:id="@+id/og_stat_active" layout="@layout/seekerog_stat" />
+                <include android:id="@+id/og_stat_queued" layout="@layout/seekerog_stat" />
+                <include android:id="@+id/og_stat_done" layout="@layout/seekerog_stat" />
+                <include android:id="@+id/og_stat_failed" layout="@layout/seekerog_stat" />
+            </LinearLayout>
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/og_home_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:max="100"
+                app:trackCornerRadius="4dp"
+                app:indicatorColor="?attr/glassAccentSecondary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView android:id="@+id/og_home_recent_label" style="@style/SeekerOG.SectionLabel" android:layout_marginStart="18dp" android:text="@string/seekerog_home_recent" />
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/og_home_recent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <TextView android:id="@+id/og_home_fav_label" style="@style/SeekerOG.SectionLabel" android:layout_marginStart="18dp" android:text="@string/seekerog_home_favorite_searches" />
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/og_home_favorites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <TextView android:id="@+id/og_home_users_label" style="@style/SeekerOG.SectionLabel" android:layout_marginStart="18dp" android:text="@string/seekerog_home_favorite_users" />
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/og_home_users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <TextView android:id="@+id/og_home_profiles_label" style="@style/SeekerOG.SectionLabel" android:layout_marginStart="18dp" android:text="@string/seekerog_filter_profiles" />
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/og_home_profiles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+</LinearLayout>

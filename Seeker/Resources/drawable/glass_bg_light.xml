@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Soft "liquid" light background: two diagonal washes over a pale base -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item><shape><solid android:color="#F3F7FC" /></shape></item>
+    <item><shape><gradient android:type="radial" android:gradientRadius="420dp" android:centerX="0.1" android:centerY="0.05" android:startColor="#5547B5E8" android:endColor="#0047B5E8" /></shape></item>
+    <item><shape><gradient android:type="radial" android:gradientRadius="460dp" android:centerX="0.95" android:centerY="0.55" android:startColor="#448B7CF6" android:endColor="#008B7CF6" /></shape></item>
+    <item><shape><gradient android:type="radial" android:gradientRadius="380dp" android:centerX="0.2" android:centerY="1.0" android:startColor="#3300C2B8" android:endColor="#0000C2B8" /></shape></item>
+</layer-list>

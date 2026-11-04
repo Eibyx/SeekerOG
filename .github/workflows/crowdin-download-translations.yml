@@ -9,6 +9,9 @@ on:
 
 jobs:
   download:
+    # Upstream (jackBonadies/SeekerAndroid) maintainer workflow: needs upstream secrets.
+    # SeekerOG uses seekerog-release.yml instead.
+    if: github.repository == 'jackBonadies/SeekerAndroid'
     name: Open a PR with new translations
     runs-on: ubuntu-latest
 

@@ -175,6 +175,7 @@ namespace Seeker
                         : Resource.String.expand_all);
                 }
             }
+            menu.FindItem(Resource.Id.action_og_hide_duplicates)?.SetChecked(SearchTools.HideDuplicates);
             //var groupedItem = menu.FindItem(Resource.Id.action_toggle_grouped_chips);
             //if (groupedItem != null)
             //{
@@ -419,6 +420,41 @@ namespace Seeker
                 //    return true;
                 case Resource.Id.action_add_to_wishlist:
                     AddSearchToWishlist();
+                    return true;
+                // ---- SeekerOG search tools ----
+                case Resource.Id.action_og_advanced_filters:
+                    AdvancedFilterDialog.Show(this.Activity, SearchTabHelper.TextFilter.FilterString ?? string.Empty, ApplyAdvancedFilter);
+                    return true;
+                case Resource.Id.action_og_filter_profiles:
+                    AdvancedFilterDialog.ShowProfiles(this.Activity, ApplyAdvancedFilter);
+                    return true;
+                case Resource.Id.action_og_hide_duplicates:
+                    SearchTools.HideDuplicates = !SearchTools.HideDuplicates;
+                    item.SetChecked(SearchTools.HideDuplicates);
+                    SeekerOGStore.SaveSearchTools();
+                    RefreshOnChipChanged();
+                    return true;
+                case Resource.Id.action_og_favorite_search:
+                {
+                    string term = SearchTabHelper.LastSearchTerm;
+                    if (string.IsNullOrWhiteSpace(term))
+                    {
+                        term = GetSearchBoxText();
+                    }
+                    if (string.IsNullOrWhiteSpace(term))
+                    {
+                        return true;
+                    }
+                    SearchTools.ToggleFavorite(term);
+                    SeekerOGStore.SaveSearchTools();
+                    SeekerApplication.Toaster.ShowToast(SeekerApplication.GetString(SearchTools.IsFavorite(term) ? Resource.String.seekerog_favorite_added : Resource.String.seekerog_favorite_removed), ToastLength.Short);
+                    return true;
+                }
+                case Resource.Id.action_og_export:
+                    ExportResults();
+                    return true;
+                case Resource.Id.action_og_syntax_help:
+                    AdvancedFilterDialog.ShowSyntaxHelp(this.Activity);
                     return true;
             }
             return base.OnOptionsItemSelected(item);
@@ -1332,10 +1368,62 @@ namespace Seeker
             }
         }
 
+        /// <summary>SeekerOG: puts a filter (advanced syntax) in the result filter box, which re-filters the results.</summary>
+        public void ApplyAdvancedFilter(string filter)
+        {
+            var filterText = rootView?.FindViewById<EditText>(Resource.Id.filterText);
+            if (filterText == null)
+            {
+                return;
+            }
+            filterText.Text = filter ?? string.Empty;
+            var parsed = AdvancedQuery.Parse(filter ?? string.Empty);
+            if (parsed.Warnings.Count > 0)
+            {
+                SeekerApplication.Toaster.ShowToast(SeekerApplication.ApplicationContext.GetString(Resource.String.seekerog_filter_warning, string.Join(" ", parsed.Warnings)), ToastLength.Long);
+            }
+        }
+
+        /// <summary>SeekerOG: exports the visible (filtered) results as CSV through the Android share sheet.</summary>
+        private void ExportResults()
+        {
+            try
+            {
+                var tab = SearchTabHelper.SearchTabCollection[SearchTabHelper.CurrentTab];
+                var list = (tab.TextFilter.IsFiltered || AreChipsFiltering() || AreFilterControlsActive()) ? tab.UI_SearchResponses.ToList() : tab.SearchResponses.ToList();
+                if (list.Count == 0)
+                {
+                    SeekerApplication.Toaster.ShowToast(SeekerApplication.GetString(Resource.String.seekerog_nothing_to_export), ToastLength.Short);
+                    return;
+                }
+                string csv = SearchTools.ToCsv(list, PreferencesState.HideLockedResultsInSearch);
+                var dir = new Java.IO.File(this.Activity.CacheDir, "exports");
+                dir.Mkdirs();
+                string safe = new string((tab.LastSearchTerm ?? "results").Select(c => char.IsLetterOrDigit(c) ? c : '_').ToArray());
+                if (safe.Length > 40) safe = safe.Substring(0, 40);
+                var file = new Java.IO.File(dir, "seekerog_" + safe + ".csv");
+                System.IO.File.WriteAllText(file.AbsolutePath, csv);
+                var uri = AndroidX.Core.Content.FileProvider.GetUriForFile(this.Activity, this.Activity.PackageName + ".provider", file);
+                var send = new Android.Content.Intent(Android.Content.Intent.ActionSend);
+                send.SetType("text/csv");
+                send.PutExtra(Android.Content.Intent.ExtraStream, uri);
+                send.PutExtra(Android.Content.Intent.ExtraSubject, "SeekerOG: " + tab.LastSearchTerm);
+                send.AddFlags(Android.Content.ActivityFlags.GrantReadUriPermission);
+                StartActivity(Android.Content.Intent.CreateChooser(send, SeekerApplication.GetString(Resource.String.seekerog_export_results)));
+            }
+            catch (System.Exception e)
+            {
+                Logger.Firebase("export failed " + e.Message);
+                SeekerApplication.Toaster.ShowToast(e.Message, ToastLength.Long);
+            }
+        }
+
         internal static bool AreFilterControlsActive()
         {
             return PreferencesState.FilterFormat != FormatFilterType.Any
-                || PreferencesState.FilterMinBitrateKbs > 0;
+                || PreferencesState.FilterMinBitrateKbs > 0
+                || SearchTools.HideDuplicates
+                || (SearchTabHelper.SearchTabCollection.TryGetValue(SearchTabHelper.CurrentTab, out SearchTab current) && current.HasQueryFilter);
         }
 
         private void B_Click(object sender, EventArgs e)
@@ -1760,7 +1848,13 @@ namespace Seeker
             var mergedFlags = MergeFilterFlags(searchTab.TextFilter.FilterSpecialFlags);
             searchTab.UI_SearchResponses.Clear();
             searchTab.UI_SearchResponses.AddRange(searchTab.SearchResponses.FindAll(
-                s => SearchFilter.MatchesAllCriteria(s, searchTab.ChipsFilter, mergedFlags, searchTab.TextFilter.WordsToAvoid, searchTab.TextFilter.WordsToInclude, hideLocked)));
+                s => SearchFilter.MatchesAllCriteria(s, searchTab.ChipsFilter, mergedFlags, searchTab.TextFilter.WordsToAvoid, searchTab.TextFilter.WordsToInclude, hideLocked, searchTab.TextFilter.Advanced, searchTab.QueryFilter)));
+            if (SearchTools.HideDuplicates)
+            {
+                var deduped = SearchTools.RemoveDuplicates(searchTab.UI_SearchResponses, hideLocked);
+                searchTab.UI_SearchResponses.Clear();
+                searchTab.UI_SearchResponses.AddRange(deduped);
+            }
             UpdateEmptyState();
         }
 
@@ -1944,6 +2038,13 @@ namespace Seeker
             if ((response.FileCount == 0 && PreferencesState.HideLockedResultsInSearch) || (!PreferencesState.HideLockedResultsInSearch && response.FileCount == 0 && response.LockedFileCount == 0))
             {
                 Logger.Debug("Skipping Locked or 0/0");
+                return;
+            }
+            // SeekerOG: local filters typed in the search box (format:flac, size<100MB ...) are applied as
+            // results arrive so non matching responses never occupy memory or the result limit.
+            if (SearchTabHelper.SearchTabCollection.TryGetValue(fromTab, out SearchTab incomingTab) && incomingTab.HasQueryFilter
+                && !incomingTab.QueryFilter.ResponseMatches(response, PreferencesState.HideLockedResultsInSearch))
+            {
                 return;
             }
             AddIncomingSearchResponseImp(response, fromTab, fromWishlist);
@@ -2511,6 +2612,19 @@ namespace Seeker
             {
                 MarkSearchFailed(fromTab, fromWishlist, cancellationToken, SeekerApplication.GetString(Resource.String.must_be_logged_to_search));
                 return;
+            }
+            // SeekerOG advanced syntax: only words and -exclusions go to the Soulseek server,
+            // the rest is applied locally to the received results.
+            AdvancedQuery advancedQuery = AdvancedQuery.Parse(searchString);
+            SearchTabHelper.SearchTabCollection[fromTab].QueryFilter = advancedQuery.HasLocalFilters ? advancedQuery : null;
+            if (advancedQuery.HasLocalFilters)
+            {
+                if (!advancedQuery.ServerQuery.Split(' ').Any(w => w.Length > 0 && !w.StartsWith('-')))
+                {
+                    MarkSearchFailed(fromTab, fromWishlist, cancellationToken, SeekerApplication.GetString(Resource.String.seekerog_search_needs_words));
+                    return;
+                }
+                searchString = advancedQuery.ServerQuery;
             }
             SessionService.Instance.RunWithReconnect(t =>
             {

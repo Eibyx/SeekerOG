@@ -1,5 +1,27 @@
 <div align="center">
 
+<h2><b>SeekerOG</b></h2>
+<h4>Seeker with advanced search, a Glass interface, a music library and an integrated player.</h4>
+
+<img src="docs/screenshots/home-glass-light.jpg" width="200"> <img src="docs/screenshots/library-glass.jpg" width="200"> <img src="docs/screenshots/settings-appearance.jpg" width="200">
+
+</div>
+
+**SeekerOG** (`com.eibyx.seekerog`) is a fork of [Seeker](https://github.com/jackBonadies/SeekerAndroid) that keeps the official Soulseek network, accounts and the Soulseek.NET engine, and adds:
+
+- Nicotine+-style **advanced search syntax** and graphical filters (format, bitrate, sample rate, bit depth, size, duration, availability, regex, phrases…), filter profiles, favourite searches, duplicate hiding, CSV export
+- **Glass** light / dark / AMOLED themes, floating bottom bar (Home · Search · Transfers · Library · Settings), new Home dashboard, appearance settings
+- **Library and player** (MediaStore library, background playback, media controls, equalizer, quality info)
+- Password stored encrypted with the Android Keystore; FOSS flavour without telemetry
+
+See [docs/SEEKEROG.md](docs/SEEKEROG.md) for the feature list, search syntax, build and release signing instructions. Releases: <https://github.com/Eibyx/SeekerOG/releases>.
+
+---
+
+*Original Seeker README follows.*
+
+<div align="center">
+
 <p><img src="fastlane/metadata/android/en-US/images/icon_circle_crop.png" width="170"></p>
 <h2><b>Seeker</b></h2>
 <h4>A Soulseek client for Android.</h4>

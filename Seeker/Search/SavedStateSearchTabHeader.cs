@@ -1,4 +1,4 @@
-using Common;
+﻿using Common;
 using Seeker.Search;
 using Soulseek;
 using System.Collections.Generic;
@@ -31,6 +31,8 @@ namespace Seeker
             SearchTab searchTab = new SearchTab();
             searchTab.SearchResponses = responses;
             searchTab.LastSearchTerm = savedStateHeader.LastSearchTerm;
+            var restoredQuery = AdvancedQuery.Parse(savedStateHeader.LastSearchTerm);
+            searchTab.QueryFilter = restoredQuery.HasLocalFilters ? restoredQuery : null;
             searchTab.LastRanTime = new System.DateTime(savedStateHeader.LastRanTime);
             searchTab.SearchTarget = SearchTarget.Wishlist;
             searchTab.LastSearchResultsCount = responses != null ? responses.Count : savedStateHeader.LastSearchResultsCount;

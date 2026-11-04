@@ -1,4 +1,4 @@
-using Android.Content;
+﻿using Android.Content;
 using Common;
 using System;
 
@@ -20,6 +20,8 @@ namespace Seeker
                     return Resource.Style.DefaultLight_Red;
                 case DayThemeType.Modern:
                     return Resource.Style.DefaultLight_Modern;
+                case DayThemeType.Glass:
+                    return Resource.Style.DefaultLight_Glass;
                 default:
                     throw new Exception("unknown");
             }
@@ -43,6 +45,10 @@ namespace Seeker
                     return Resource.Style.Amoled_Grey;
                 case NightThemeType.Modern:
                     return Resource.Style.DefaultDark_Modern;
+                case NightThemeType.Glass:
+                    return Resource.Style.DefaultDark_Glass;
+                case NightThemeType.AmoledGlass:
+                    return Resource.Style.Amoled_Glass;
                 default:
                     throw new Exception("unknown");
             }
@@ -71,6 +77,9 @@ namespace Seeker
                             return ThemeHelper.ToDayThemeProper(DayThemeType.ClassicPurple);
                         case NightThemeType.Modern:
                             return ThemeHelper.ToDayThemeProper(DayThemeType.Modern);
+                        case NightThemeType.Glass:
+                        case NightThemeType.AmoledGlass:
+                            return ThemeHelper.ToDayThemeProper(DayThemeType.Glass);
                         case NightThemeType.Blue:
                             return ThemeHelper.ToDayThemeProper(DayThemeType.Blue);
                         case NightThemeType.Red:
@@ -103,6 +112,8 @@ namespace Seeker
                             return ThemeHelper.ToNightThemeProper(NightThemeType.Grey);
                         case DayThemeType.Modern:
                             return ThemeHelper.ToNightThemeProper(NightThemeType.Modern);
+                        case DayThemeType.Glass:
+                            return ThemeHelper.ToNightThemeProper(NightThemeType.Glass);
                         default:
                             return ThemeHelper.ToNightThemeProper(NightThemeType.ClassicPurple);
                     }

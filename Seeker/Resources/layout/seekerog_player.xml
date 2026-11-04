@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/og_player_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="?attr/glassWindowBackground">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/og_player_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="@string/seekerog_now_playing" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingBottom="24dp">
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/SeekerOG.GlassCard"
+                android:layout_width="280dp"
+                android:layout_height="280dp"
+                android:layout_marginTop="8dp"
+                app:cardCornerRadius="28dp">
+                <ImageView
+                    android:id="@+id/og_player_art"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:padding="0dp"
+                    android:contentDescription="@string/seekerog_album_art" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/og_player_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:gravity="center"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="?attr/glassTextPrimary"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/og_player_artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="?attr/glassTextSecondary"
+                android:textSize="15sp" />
+
+            <SeekBar
+                android:id="@+id/og_player_seek"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
+                <TextView android:id="@+id/og_player_pos" android:layout_width="0dp" android:layout_weight="1" android:layout_height="wrap_content" android:textSize="12sp" android:textColor="?attr/glassTextSecondary" />
+                <TextView android:id="@+id/og_player_dur" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="12sp" android:textColor="?attr/glassTextSecondary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageButton android:id="@+id/og_player_shuffle" style="@style/SeekerOG.PlayerButton" android:src="@drawable/og_shuffle" android:contentDescription="@string/seekerog_player_shuffle" />
+                <ImageButton android:id="@+id/og_player_prev" style="@style/SeekerOG.PlayerButton" android:src="@drawable/og_prev" android:contentDescription="@string/seekerog_player_prev" />
+                <ImageButton
+                    android:id="@+id/og_player_toggle"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/glass_pill_accent"
+                    android:src="@drawable/og_play"
+                    android:padding="18dp"
+                    android:scaleType="fitCenter"
+                    android:contentDescription="@string/seekerog_player_play"
+                    app:tint="?attr/glassOnAccent" />
+                <ImageButton android:id="@+id/og_player_next" style="@style/SeekerOG.PlayerButton" android:src="@drawable/og_next" android:contentDescription="@string/seekerog_player_next" />
+                <ImageButton android:id="@+id/og_player_repeat" style="@style/SeekerOG.PlayerButton" android:src="@drawable/og_repeat" android:contentDescription="@string/seekerog_player_repeat" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ImageButton android:id="@+id/og_player_fav" style="@style/SeekerOG.PlayerButton" android:src="@drawable/og_favorite_border" android:contentDescription="@string/seekerog_favorite" />
+                <ImageButton android:id="@+id/og_player_queue" style="@style/SeekerOG.PlayerButton" android:src="@drawable/og_queue" android:contentDescription="@string/seekerog_queue" />
+                <ImageButton android:id="@+id/og_player_eq" style="@style/SeekerOG.PlayerButton" android:src="@drawable/og_equalizer" android:contentDescription="@string/seekerog_equalizer" />
+                <ImageButton android:id="@+id/og_player_addlist" style="@style/SeekerOG.PlayerButton" android:src="@drawable/og_playlist" android:contentDescription="@string/seekerog_add_to_playlist" />
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/SeekerOG.GlassCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+                    <TextView style="@style/SeekerOG.SectionLabel" android:layout_marginTop="0dp" android:text="@string/seekerog_audio_quality" />
+                    <TextView android:id="@+id/og_player_quality" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="13sp" android:textColor="?attr/glassTextPrimary" />
+                    <TextView style="@style/SeekerOG.SectionLabel" android:text="@string/seekerog_audio_output" />
+                    <TextView android:id="@+id/og_player_output" android:layout_width="match_parent" android:layout_height="wrap_content" android:textSize="13sp" android:textColor="?attr/glassTextPrimary" />
+                    <TextView android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="@string/seekerog_bitperfect_note" android:textSize="11sp" android:textColor="?attr/glassTextSecondary" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

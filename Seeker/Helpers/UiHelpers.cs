@@ -955,6 +955,7 @@ namespace Seeker
             {
                 a.SetTheme(ThemeHelper.ToDayThemeProper(PreferencesState.DayModeVariant));
             }
+            GlassAppearance.ApplyOverlays(a);
         }
 
         public static View GetViewForSnackbar()

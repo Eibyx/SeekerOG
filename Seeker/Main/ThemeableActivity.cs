@@ -49,6 +49,7 @@ namespace Seeker
 
         protected override void AttachBaseContext(Context @base)
         {
+            @base = GlassAppearance.WrapTextScale(@base);
             if (!LocaleHelper.HasProperPerAppLanguageSupport() && PreferencesState.Language != PreferencesState.FieldLangAuto)
             {
                 var config = new Android.Content.Res.Configuration();
