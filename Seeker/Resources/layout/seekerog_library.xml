@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="?attr/glassWindowBackground">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/og_library_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        app:navigationIcon="?attr/homeAsUpIndicator"
+        app:title="@string/seekerog_nav_library" />
+
+    <EditText
+        android:id="@+id/og_library_search"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/glass_search_field"
+        android:drawableStart="@drawable/og_search"
+        android:drawablePadding="10dp"
+        android:drawableTint="?attr/glassTextSecondary"
+        android:hint="@string/seekerog_library_search_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:textColor="?attr/glassTextPrimary"
+        android:textColorHint="?attr/glassTextSecondary"
+        android:textSize="15sp" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/og_library_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:background="@android:color/transparent"
+        app:tabMode="scrollable"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorColor="?attr/glassAccentSecondary"
+        app:tabSelectedTextColor="?attr/glassTextPrimary"
+        app:tabTextColor="?attr/glassTextSecondary" />
+
+    <LinearLayout
+        android:id="@+id/og_library_crumb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="8dp"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/og_library_crumb_text"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="?attr/glassTextPrimary" />
+        <Button
+            android:id="@+id/og_library_play_all"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/seekerog_play_all" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/og_library_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="12dp" />
+        <TextView
+            android:id="@+id/og_library_empty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="32dp"
+            android:textColor="?attr/glassTextSecondary"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <!-- mini player -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/og_mini_player"
+        style="@style/SeekerOG.GlassCard"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="8dp">
+            <ImageView android:layout_width="24dp" android:layout_height="24dp" android:src="@drawable/og_music_note" app:tint="?attr/glassAccentSecondary" />
+            <TextView
+                android:id="@+id/og_mini_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="?attr/glassTextPrimary"
+                android:textSize="15sp" />
+            <ImageButton
+                android:id="@+id/og_mini_toggle"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/og_play"
+                android:contentDescription="@string/seekerog_player_play"
+                app:tint="?attr/glassTextPrimary" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

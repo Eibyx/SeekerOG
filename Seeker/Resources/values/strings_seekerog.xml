@@ -112,4 +112,15 @@
     <string name="seekerog_track_info">Details</string>
     <string name="seekerog_added">Added</string>
     <string name="seekerog_rescan">Rescan library</string>
+    <string name="seekerog_home_title">Find music on Soulseek</string>
+    <string name="seekerog_home_search_hint">Artist, album, track…</string>
+    <string name="seekerog_home_search_tip">Tip: daft punk format:flac bits:24 -live</string>
+    <string name="seekerog_home_transfers">Downloads</string>
+    <string name="seekerog_stat_active">Active</string>
+    <string name="seekerog_stat_queued">Queued</string>
+    <string name="seekerog_stat_done">Done</string>
+    <string name="seekerog_stat_failed">Errors</string>
+    <string name="seekerog_home_recent">Recent searches</string>
+    <string name="seekerog_home_favorite_searches">Favourite searches</string>
+    <string name="seekerog_home_favorite_users">Favourite users</string>
 </resources>

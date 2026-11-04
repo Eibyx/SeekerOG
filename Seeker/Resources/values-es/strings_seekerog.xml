@@ -112,4 +112,15 @@
     <string name="seekerog_track_info">Detalles</string>
     <string name="seekerog_added">Añadido</string>
     <string name="seekerog_rescan">Volver a analizar</string>
+    <string name="seekerog_home_title">Encuentra música en Soulseek</string>
+    <string name="seekerog_home_search_hint">Artista, álbum, canción…</string>
+    <string name="seekerog_home_search_tip">Consejo: daft punk formato:flac bits:24 -live</string>
+    <string name="seekerog_home_transfers">Descargas</string>
+    <string name="seekerog_stat_active">Activas</string>
+    <string name="seekerog_stat_queued">En cola</string>
+    <string name="seekerog_stat_done">Listas</string>
+    <string name="seekerog_stat_failed">Errores</string>
+    <string name="seekerog_home_recent">Búsquedas recientes</string>
+    <string name="seekerog_home_favorite_searches">Búsquedas favoritas</string>
+    <string name="seekerog_home_favorite_users">Usuarios favoritos</string>
 </resources>
